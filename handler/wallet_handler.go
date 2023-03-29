@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) GetDetail(c *gin.Context) {
-	userIdStr := c.Query("user_id")
+	userIdStr := c.Param("user-id")
 	userId, err := strconv.Atoi(userIdStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

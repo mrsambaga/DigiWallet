@@ -19,8 +19,8 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 		WalletUsecase: cfg.WalletUsecase,
 	})
 
-	router.GET("/wallet", h.GetDetail)
+	router.GET("/wallet/:user-id", h.GetDetail)
 
-	log.Fatal(http.ListenAndServe(":8011", router))
+	log.Fatal(http.ListenAndServe(":8013", router))
 	return router
 }
