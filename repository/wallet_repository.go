@@ -3,12 +3,13 @@ package repository
 import (
 	"assignment-golang-backend/dto"
 	"assignment-golang-backend/entity"
+	"assignment-golang-backend/httperror"
 
 	"gorm.io/gorm"
 )
 
 type WalletRepository interface {
-	GetDetail(userId int) (*dto.WalletDetail, error)
+	GetSelfDetail(userId int) (*dto.WalletDetailDTO, error)
 }
 
 type walletRepositoryImp struct {
@@ -25,14 +26,14 @@ func NewWalletRepository(cfg *WalletRConfig) WalletRepository {
 	}
 }
 
-func (r *walletRepositoryImp) GetDetail(userId int) (*dto.WalletDetail, error) {
+func (r *walletRepositoryImp) GetSelfDetail(userId int) (*dto.WalletDetailDTO, error) {
 	var wallet *entity.Wallet
 	err := r.db.Where("user_id = ?", userId).Preload("User").Find(&wallet).Error
 	if err != nil {
-		return nil, err
+		return nil, httperror.ErrUserNotExist
 	}
 
-	dtoResponse := &dto.WalletDetail{
+	dtoResponse := &dto.WalletDetailDTO{
 		Id:           wallet.WalletId,
 		UserId:       wallet.UserId,
 		UserName:     wallet.User.Name,

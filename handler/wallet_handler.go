@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) GetDetail(c *gin.Context) {
+func (h *Handler) GetSelfDetail(c *gin.Context) {
 	userIdStr := c.Param("user-id")
 	userId, err := strconv.Atoi(userIdStr)
 	if err != nil {
@@ -18,7 +18,7 @@ func (h *Handler) GetDetail(c *gin.Context) {
 		return
 	}
 
-	wallet, err := h.walletUsecase.GetDetail(userId)
+	wallet, err := h.walletUsecase.GetSelfDetail(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    "INTERNAL_SERVER_ERROR",

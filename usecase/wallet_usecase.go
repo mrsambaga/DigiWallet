@@ -6,7 +6,7 @@ import (
 )
 
 type WalletUsecase interface {
-	GetDetail(userId int) (*dto.WalletDetail, error)
+	GetSelfDetail(userId int) (*dto.WalletDetailDTO, error)
 }
 
 type walletUsecaseImp struct {
@@ -23,6 +23,6 @@ func NewWalletUsecase(cfg *WalletUConfig) WalletUsecase {
 	}
 }
 
-func (u *walletUsecaseImp) GetDetail(userId int) (*dto.WalletDetail, error) {
-	return u.walletRepository.GetDetail(userId)
+func (u *walletUsecaseImp) GetSelfDetail(userId int) (*dto.WalletDetailDTO, error) {
+	return u.walletRepository.GetSelfDetail(userId)
 }

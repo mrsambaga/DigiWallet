@@ -11,16 +11,22 @@ import (
 
 type RouterConfig struct {
 	WalletUsecase usecase.WalletUsecase
+	UserUsecase   usecase.UsersUsecase
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
 	router := gin.New()
 	h := handler.New(&handler.Config{
 		WalletUsecase: cfg.WalletUsecase,
+		UserUsecase:   cfg.UserUsecase,
 	})
 
-	router.GET("/wallet/:user-id", h.GetDetail)
+	router.GET("/users/:user-id", h.GetSelfDetail)
 
-	log.Fatal(http.ListenAndServe(":8013", router))
+	router.POST("/register", h.Register)
+
+	router.POST("/login", h.Login)
+
+	log.Fatal(http.ListenAndServe(":8031", router))
 	return router
 }

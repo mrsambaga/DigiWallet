@@ -16,9 +16,16 @@ func createRouter() *gin.Engine {
 	walletUsecase := usecase.NewWalletUsecase(&usecase.WalletUConfig{
 		WalletRepository: walletRepo,
 	})
+	userRepo := repository.NewUserRepository(&repository.UserRConfig{
+		DB: db.GetDB(),
+	})
+	userUsecase := usecase.NewUsersUsecase(&usecase.UsersUsecaseConfig{
+		UsersRepository: userRepo,
+	})
 
 	return NewRouter(&RouterConfig{
 		WalletUsecase: walletUsecase,
+		UserUsecase:   userUsecase,
 	})
 }
 
