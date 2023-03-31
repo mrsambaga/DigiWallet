@@ -1,15 +1,16 @@
 package repository
 
 import (
-	"assignment-golang-backend/dto"
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/httperror"
+	"strings"
 
 	"gorm.io/gorm"
 )
 
 type WalletRepository interface {
-	GetSelfDetail(userId int) (*dto.WalletDetailDTO, error)
+	GetSelfDetail(userId int) (*entity.Wallet, error)
+	GetOtherUserDetail(userId int) (*entity.Wallet, error)
 }
 
 type walletRepositoryImp struct {
@@ -26,21 +27,39 @@ func NewWalletRepository(cfg *WalletRConfig) WalletRepository {
 	}
 }
 
-func (r *walletRepositoryImp) GetSelfDetail(userId int) (*dto.WalletDetailDTO, error) {
+func (r *walletRepositoryImp) GetSelfDetail(userId int) (*entity.Wallet, error) {
 	var wallet *entity.Wallet
 	err := r.db.Where("user_id = ?", userId).Preload("User").Find(&wallet).Error
 	if err != nil {
 		return nil, httperror.ErrUserNotExist
 	}
 
-	dtoResponse := &dto.WalletDetailDTO{
-		Id:           wallet.WalletId,
-		UserId:       wallet.UserId,
-		UserName:     wallet.User.Name,
-		Email:        wallet.User.Email,
-		WalletNumber: wallet.WalletNumber,
-		Balance:      wallet.Balance,
+	return wallet, nil
+}
+
+func (r *walletRepositoryImp) GetOtherUserDetail(userId int) (*entity.Wallet, error) {
+	var wallet *entity.Wallet
+	err := r.db.Where("user_id = ?", userId).Preload("User").Find(&wallet).Error
+	if err != nil {
+		return nil, httperror.ErrUserNotExist
 	}
 
-	return dtoResponse, nil
+	hiddenName := r.hideName(wallet.User.Name)
+
+	wallet.User.Name = hiddenName
+
+	return wallet, nil
+}
+
+func (r *walletRepositoryImp) hideName(name string) string {
+	var names []string
+
+	nameSplit := strings.Split(name, " ")
+	for _, name := range nameSplit {
+		hiddenName := name[:1] + "* "
+		names = append(names, hiddenName)
+	}
+
+	joinedName := strings.Join(names, "")
+	return joinedName[:len(joinedName)-1]
 }

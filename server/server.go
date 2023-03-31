@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	"assignment-golang-backend/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,12 +23,13 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 		UserUsecase:   cfg.UserUsecase,
 	})
 
-	router.GET("/users/:user-id", h.GetSelfDetail)
+	router.GET("/users/self", middleware.AuthorizeJWT, h.GetSelfDetail)
+	router.GET("/users/other", middleware.AuthorizeJWT, h.GetOtherUserDetail)
 
 	router.POST("/register", h.Register)
 
 	router.POST("/login", h.Login)
 
-	log.Fatal(http.ListenAndServe(":8031", router))
+	log.Fatal(http.ListenAndServe(":8052", router))
 	return router
 }

@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/golang-jwt/jwt/v4"
+
 type WalletDetailDTO struct {
 	Id           uint64  `json:"wallet_id"`
 	UserId       uint64  `json:"user_id"`
@@ -10,8 +12,8 @@ type WalletDetailDTO struct {
 }
 
 type OtherWalletDetailDTO struct {
-	UserName     string  `json:"user_name"`
-	WalletNumber uint64  `json:"wallet_number"`
+	UserName     string `json:"user_name"`
+	WalletNumber uint64 `json:"wallet_number"`
 }
 
 type RegisterRequestDTO struct {
@@ -32,4 +34,14 @@ type RegisterResponseDTO struct {
 type LoginRequestDTO struct {
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
+}
+
+type IdTokenClaims struct {
+	UserID uint64 `json:"id"`
+	Email  string `json:"email"`
+	jwt.StandardClaims
+}
+
+type TokenResponse struct {
+	Token string `json:"token"`
 }

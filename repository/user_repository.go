@@ -3,11 +3,8 @@ package repository
 import (
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/httperror"
-	"os"
-	"time"
+	"assignment-golang-backend/util"
 
-	"github.com/golang-jwt/jwt/v4"
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -37,11 +34,11 @@ func (r *userRepositoryImp) Register(newUser *entity.User) (*entity.Wallet, erro
 		return nil, httperror.ErrEmailAlreadyRegistered
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), 10)
+	hashedPassword, err := util.HashPassword(newUser.Password)
 	if err != nil {
-		return nil, httperror.ErrGenerateHash
+		return nil, err
 	}
-	newUser.Password = string(hashedPassword)
+	newUser.Password = hashedPassword
 
 	if err := r.db.Create(&newUser).Error; err != nil {
 		return nil, httperror.ErrCreateUser
@@ -59,12 +56,11 @@ func (r *userRepositoryImp) NewWallet(user *entity.User) *entity.Wallet {
 	var lastWallet *entity.Wallet
 	var walletNumber uint64
 
-	r.db.Order("wallet_number desc").First(&lastWallet)
-	if lastWallet == nil {
+	if err := r.db.Order("wallet_number desc").First(&lastWallet).Error; err != nil {
 		walletNumber = 123000000000
+	} else {
+		walletNumber = lastWallet.WalletNumber + 1
 	}
-
-	walletNumber = lastWallet.WalletNumber + 1
 
 	return &entity.Wallet{
 		UserId:       user.UserId,
@@ -78,23 +74,19 @@ func (r *userRepositoryImp) Login(loginUser *entity.User) (string, error) {
 	var user *entity.User
 
 	if err := r.db.Where("email = ?", loginUser.Email).First(&user).Error; err != nil {
-		return "", httperror.ErrEmailNotRegistered
+		return "", httperror.ErrInvalidEmail
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginUser.Password))
+	ok := util.ComparePassword(user.Password, loginUser.Password)
+	if !ok {
+		return "", httperror.ErrInvalidPassword
+	}
+
+	loginUser.UserId = user.UserId
+	tokenString, err := util.GenerateAccessToken(loginUser)
 	if err != nil {
 		return "", err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": loginUser.UserId,
-		"exp": time.Now().Add(time.Minute * 20).Unix(),
-	})
-
-	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET_API")))
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
+	return tokenString.Token, nil
 }
