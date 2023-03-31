@@ -25,8 +25,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 		TransactionUsecase: cfg.TransactionUsecase,
 	})
 
-	router.GET("/users/self", middleware.AuthorizeJWT, h.GetSelfDetail)
-	router.GET("/users/other", middleware.AuthorizeJWT, h.GetOtherUserDetail)
+	router.GET("/users/:user-id", middleware.AuthorizeJWT, h.GetDetail)
 	router.GET("/users/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
 
 	router.POST("/register", h.Register)
