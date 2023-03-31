@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -56,7 +55,6 @@ func AuthorizeJWT(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(claims)
 	c.Set("id", int(claims["id"].(float64)))
 	c.Next()
 }

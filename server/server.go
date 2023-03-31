@@ -12,19 +12,22 @@ import (
 )
 
 type RouterConfig struct {
-	WalletUsecase usecase.WalletUsecase
-	UserUsecase   usecase.UsersUsecase
+	WalletUsecase      usecase.WalletUsecase
+	UserUsecase        usecase.UsersUsecase
+	TransactionUsecase usecase.TransactionUsecase
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
 	router := gin.New()
 	h := handler.New(&handler.Config{
-		WalletUsecase: cfg.WalletUsecase,
-		UserUsecase:   cfg.UserUsecase,
+		WalletUsecase:      cfg.WalletUsecase,
+		UserUsecase:        cfg.UserUsecase,
+		TransactionUsecase: cfg.TransactionUsecase,
 	})
 
 	router.GET("/users/self", middleware.AuthorizeJWT, h.GetSelfDetail)
 	router.GET("/users/other", middleware.AuthorizeJWT, h.GetOtherUserDetail)
+	router.GET("/users/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
 
 	router.POST("/register", h.Register)
 
