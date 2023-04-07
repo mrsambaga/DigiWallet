@@ -1,0 +1,45 @@
+.register {
+  max-width: 100%;
+}
+.register__container {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.register__container__left {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.register__container__right {
+  width: 35%;
+  background-color: #23A6F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.register__logo {
+  width: 277px;
+  height: 323px;
+}
+.register__form {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  position: absolute;
+  left: 15%;
+  gap: 20px;
+}
+.register__form h3 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 26px;
+  letter-spacing: 0.2px;
+  color: #000000;
+  margin-bottom: 40px;
+}/*# sourceMappingURL=register.css.map */

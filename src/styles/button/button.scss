@@ -1,0 +1,21 @@
+@use"../var/var";
+
+.button {
+    background-color: var.$primary-color;
+    padding: 16px 20px;
+    height: 60px;
+    border-radius: 5px;
+    flex: none;
+    order: 3;
+    flex-grow: 0;
+    border: none;
+
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: 0.2px;
+    color: #FFFFFF;
+}

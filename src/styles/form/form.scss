@@ -1,0 +1,40 @@
+.form {
+    display: flex;
+    flex-direction: column;
+
+    &__label {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: 0.1px;
+        color: #252B42;
+        margin-bottom: 16px;
+    }
+
+    &__container {
+        width: 100%;
+
+        &__input {
+            width: 100%;
+            height: 50px;
+            background-color: #FFFFFF;
+            border: 1px solid #4F4F4F;
+            border-radius: 5px;
+            padding-left: 20px;
+        }
+
+        &__input::placeholder {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 28px;
+            letter-spacing: 0.2px;
+            color: #737373;
+        }
+    }
+
+    
+}
