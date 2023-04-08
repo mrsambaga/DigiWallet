@@ -40,6 +40,7 @@
         list-style: none;
         position: absolute;
         right: 25%;
+        z-index: 3;
 
         &__item {
             @include font-navbar;
@@ -51,4 +52,8 @@
             color: var.$secondary-text-color;
         }
     } 
+}
+
+#main {
+    color: var.$secondary-text-color;
 }

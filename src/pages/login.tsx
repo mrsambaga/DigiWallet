@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import Navbar from '../components/navbar';
-import '../styles/register/register.css';
-import registerLogo from '../img/register-logo.png';
+import '../styles/login/login.css';
+import loginLogo from '../img/login-logo.png';
 import Form from '../components/form';
 import Button from '../components/button';
 
-// type RegisterProps = {
+// type loginProps = {
 //   name: string;
 //   email: string;
-//   password: string;
+//   passwod: string;
 // };
 
-const Register: React.FC = () => {
+const Login: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //   const [registerForm, setRegisterForm] = useState<RegisterProps | null>(null);
+  //   const [loginForm, setLoginForm] = useState<loginProps | null>(null);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -30,21 +30,21 @@ const Register: React.FC = () => {
   };
 
   const handleClickSubmit = () => {
-    // const submitForm: RegisterProps = {
-    //     name: name,
-    //     email: email,
-    //     password: password,
-    //   };
-    //   setRegisterForm(submitForm);
+    // const submitForm: loginProps = {
+    //   name: name,
+    //   email: email,
+    //   passwod: password,
+    // };
+    // setLoginForm(submitForm);
   };
 
   return (
-    <div className="register">
+    <div className="login">
       <Navbar type="login" />
-      <div className="register__container">
-        <div className="register__container__left">
-          <div className="register__form">
-            <h3>Register</h3>
+      <div className="login__container">
+        <div className="login__container__left">
+          <div className="login__form">
+            <h3>Login</h3>
             <Form
               label="Name"
               placeholder="Asep Budiantoro Chandradiman"
@@ -66,16 +66,12 @@ const Register: React.FC = () => {
             <Button label="Submit" onClickHandler={handleClickSubmit} />
           </div>
         </div>
-        <div className="register__container__right">
-          <img
-            src={registerLogo}
-            alt="register-logo"
-            className="register__logo"
-          />
+        <div className="login__container__right">
+          <img src={loginLogo} alt="login-logo" className="login__logo" />
         </div>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default Login;

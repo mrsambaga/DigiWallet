@@ -1,6 +1,6 @@
 @use "../var/var";
 
-.register {
+.login {
     
     &__container {
         position: absolute;
@@ -25,8 +25,8 @@
     }
 
     &__logo {
-        width: 277px;
-        height: 323px;
+        width: 400px;
+        height: 239px;
     }
 
     &__form {
