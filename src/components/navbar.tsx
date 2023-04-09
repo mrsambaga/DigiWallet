@@ -9,6 +9,7 @@ const Navbar: React.FC = () => {
 
   const handleClickLogout = () => {
     setAuthenticated(false);
+    localStorage.removeItem('token');
     navigate(`/login`);
   };
 
@@ -56,7 +57,7 @@ const Navbar: React.FC = () => {
               </li>
               <li className="navbar__list__item">
                 <NavLink
-                  to="/"
+                  to="/transfer"
                   className={({ isActive }) =>
                     isActive ? 'active-main' : 'nav-link-main'
                   }
@@ -66,7 +67,7 @@ const Navbar: React.FC = () => {
               </li>
               <li className="navbar__list__item">
                 <NavLink
-                  to="/"
+                  to="/topup"
                   className={({ isActive }) =>
                     isActive ? 'active-main' : 'nav-link-main'
                   }
@@ -76,7 +77,7 @@ const Navbar: React.FC = () => {
               </li>
               <li className="navbar__list__item">
                 <NavLink
-                  to="/"
+                  to="/games"
                   className={({ isActive }) =>
                     isActive ? 'active-main' : 'nav-link-main'
                   }
