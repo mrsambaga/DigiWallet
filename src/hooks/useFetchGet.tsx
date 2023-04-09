@@ -7,7 +7,7 @@ export type FetchData = {
   error: any;
 };
 
-const useFetchGet = (url: string): FetchData => {
+const useFetchGet = (url: string, token?: string): FetchData => {
   const [data, setData] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any | null>(null);
@@ -16,7 +16,9 @@ const useFetchGet = (url: string): FetchData => {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const response = await axios.get(url);
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const config = { headers };
+        const response = await axios.get(url, config);
         setData(response?.data);
       } catch (error) {
         setError(error);

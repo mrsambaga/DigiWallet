@@ -4,7 +4,7 @@ import loginLogo from '../img/login-logo.png';
 import Form from '../components/form';
 import Button from '../components/button';
 import useFetchPost from '../hooks/useFetchPost';
-import { notifyError } from '../components/notification';
+import { NotifContainer, notifyError } from '../components/notification';
 import { AuthContext } from '../context/authContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -81,6 +81,7 @@ const Login: React.FC = () => {
           <img src={loginLogo} alt="login-logo" className="login__logo" />
         </div>
       </div>
+      <NotifContainer />
     </div>
   );
 };

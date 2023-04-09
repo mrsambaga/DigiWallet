@@ -36,6 +36,7 @@
                 right: 25%;
                 margin-top: 66px;
                 gap: 15px;
+                align-items:flex-end;
             }
 
             .greeter {
@@ -66,7 +67,6 @@
 
             .balance-title {
                 position: relative;
-                left: 320px;
             }
         }
     }
