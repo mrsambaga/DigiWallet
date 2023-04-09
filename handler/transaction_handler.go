@@ -27,7 +27,7 @@ func (h *Handler) Topup(c *gin.Context) {
 		return
 	}
 
-	err := h.transactionUsecase.Topup(newTopUp, userId)
+	newTopup, err := h.transactionUsecase.Topup(newTopUp, userId)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":   "BAD_REQUEST",
@@ -36,5 +36,5 @@ func (h *Handler) Topup(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "Top Up Successful")
+	c.JSON(http.StatusOK, gin.H{"data": newTopup})
 }

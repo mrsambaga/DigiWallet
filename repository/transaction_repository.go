@@ -2,14 +2,13 @@ package repository
 
 import (
 	"assignment-golang-backend/entity"
-	"errors"
 
 	"gorm.io/gorm"
 )
 
 type TransactionRepository interface {
 	Get(userId int) []*entity.Transaction
-	Topup(transaction *entity.Transaction) error
+	Topup(transaction *entity.Transaction) (*entity.Transaction, error)
 }
 
 type transactionRepoImp struct {
@@ -37,35 +36,25 @@ func (r *transactionRepoImp) Get(userId int) []*entity.Transaction {
 	return transactions
 }
 
-func (r *transactionRepoImp) Topup(transaction *entity.Transaction) error {
-	var sourceFunds *entity.Sources
-
-	err := r.db.Where("source_id = ?", transaction.SourceId).First(&sourceFunds).Error
-	if err != nil {
-		return errors.New("source of funds invalid")
-	}
+func (r *transactionRepoImp) Topup(transaction *entity.Transaction) (*entity.Transaction, error) {
 
 	if err := r.db.Transaction(func(tx *gorm.DB) error {
 		var wallet *entity.Wallet
-		err := tx.Where("wallet_id = ?", transaction.SourceWalletId).First(&wallet).Error
-		if err != nil {
+
+		topup := transaction
+
+		if err := tx.Model(&wallet).Where("wallet_id = ?", transaction.TargetWalletId).Update("balance", gorm.Expr("balance + ?", topup.Amount)).Error; err != nil {
 			return err
 		}
 
-		transactions := transaction
-
-		if err := tx.Model(&wallet).Update("balance", gorm.Expr("balance + ?", transactions.Amount)).Error; err != nil {
-			return err
-		}
-
-		if err := tx.Create(&transactions).Error; err != nil {
+		if err := tx.Create(&topup).Error; err != nil {
 			return err
 		}
 
 		return nil
 	}); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return transaction, nil
 }

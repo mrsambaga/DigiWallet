@@ -20,7 +20,13 @@ type RouterConfig struct {
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
 	router := gin.New()
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Authorization", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	h := handler.New(&handler.Config{
 		WalletUsecase:      cfg.WalletUsecase,
