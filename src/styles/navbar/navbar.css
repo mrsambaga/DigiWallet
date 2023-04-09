@@ -29,17 +29,42 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+.navbar__list__item .nav-link {
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
   line-height: 24px;
   text-align: center;
   letter-spacing: 0.2px;
   color: #FFFFFF;
+  text-decoration: none;
+}
+.navbar__list__item .active {
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #FFFFFF;
+  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 7px;
 }
 .navbar__list__item-first {
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   text-align: center;
   letter-spacing: 0.2px;

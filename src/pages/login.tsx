@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
-import Navbar from '../components/navbar';
+import React, { useState, useEffect } from 'react';
 import '../styles/login/login.css';
 import loginLogo from '../img/login-logo.png';
 import Form from '../components/form';
 import Button from '../components/button';
+import useFetchPost from '../hooks/useFetchPost';
+import { notifyError, notifySuccess } from '../components/notification';
 
-// type loginProps = {
-//   name: string;
-//   email: string;
-//   passwod: string;
-// };
+type LoginForm = {
+  email: string;
+  passwod: string;
+};
 
 const Login: React.FC = () => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //   const [loginForm, setLoginForm] = useState<loginProps | null>(null);
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+  const [submit, setSubmit] = useState(false);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -30,27 +25,37 @@ const Login: React.FC = () => {
   };
 
   const handleClickSubmit = () => {
-    // const submitForm: loginProps = {
-    //   name: name,
-    //   email: email,
-    //   passwod: password,
-    // };
-    // setLoginForm(submitForm);
+    if (!submit) {
+      setSubmit(true);
+    }
   };
+
+  const submitForm: LoginForm = {
+    email: email,
+    passwod: password,
+  };
+
+  const { data, error } = useFetchPost(
+    'http://localhost:8000/register',
+    submitForm,
+    submit,
+    () => setSubmit(false),
+  );
+
+  useEffect(() => {
+    if (error != null) {
+      notifyError(error.response.data.message || error.message);
+    } else if (data != null) {
+      notifySuccess(data.data.name);
+    }
+  }, [data, error]);
 
   return (
     <div className="login">
-      <Navbar type="login" />
       <div className="login__container">
         <div className="login__container__left">
           <div className="login__form">
             <h3>Login</h3>
-            <Form
-              label="Name"
-              placeholder="Asep Budiantoro Chandradiman"
-              value={name}
-              onChangeHandler={handleNameChange}
-            />
             <Form
               label="Email"
               placeholder="asep.bc@gmail.com"

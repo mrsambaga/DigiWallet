@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
-import Navbar from '../components/navbar';
+import React, { useState, useEffect } from 'react';
 import '../styles/register/register.css';
 import registerLogo from '../img/register-logo.png';
 import Form from '../components/form';
 import Button from '../components/button';
+import useFetchPost from '../hooks/useFetchPost';
+import {
+  NotifContainer,
+  notifySuccess,
+  notifyError,
+} from '../components/notification';
 
-// type RegisterProps = {
-//   name: string;
-//   email: string;
-//   password: string;
-// };
+type RegisterBody = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //   const [registerForm, setRegisterForm] = useState<RegisterProps | null>(null);
+  const [submit, setSubmit] = useState(false);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -30,17 +35,34 @@ const Register: React.FC = () => {
   };
 
   const handleClickSubmit = () => {
-    // const submitForm: RegisterProps = {
-    //     name: name,
-    //     email: email,
-    //     password: password,
-    //   };
-    //   setRegisterForm(submitForm);
+    if (!submit) {
+      setSubmit(true);
+    }
   };
+
+  const submitForm: RegisterBody = {
+    name: name,
+    email: email,
+    password: password,
+  };
+
+  const { data, error } = useFetchPost(
+    'http://localhost:8000/register',
+    submitForm,
+    submit,
+    () => setSubmit(false),
+  );
+
+  useEffect(() => {
+    if (error != null) {
+      notifyError(error.response?.data?.message || error.message);
+    } else if (data != null) {
+      notifySuccess(data.data.name);
+    }
+  }, [data, error]);
 
   return (
     <div className="register">
-      <Navbar type="login" />
       <div className="register__container">
         <div className="register__container__left">
           <div className="register__form">
@@ -74,6 +96,7 @@ const Register: React.FC = () => {
           />
         </div>
       </div>
+      <NotifContainer />
     </div>
   );
 };

@@ -72,3 +72,12 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+.Toastify__toast--error {
+  background: #EB5757 !important;
+}
+
+.Toastify__toast--success {
+  background: #23A6F0 !important;
+}
+
