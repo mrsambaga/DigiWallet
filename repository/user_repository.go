@@ -74,12 +74,12 @@ func (r *userRepositoryImp) Login(loginUser *entity.User) (string, error) {
 	var user *entity.User
 
 	if err := r.db.Where("email = ?", loginUser.Email).First(&user).Error; err != nil {
-		return "", httperror.ErrInvalidEmail
+		return "", httperror.ErrInvalidEmailPassword
 	}
 
 	ok := util.ComparePassword(user.Password, loginUser.Password)
 	if !ok {
-		return "", httperror.ErrInvalidPassword
+		return "", httperror.ErrInvalidEmailPassword
 	}
 
 	loginUser.UserId = user.UserId

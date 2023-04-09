@@ -8,6 +8,7 @@ import (
 
 	"assignment-golang-backend/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,8 @@ type RouterConfig struct {
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
 	router := gin.New()
+	router.Use(cors.Default())
+
 	h := handler.New(&handler.Config{
 		WalletUsecase:      cfg.WalletUsecase,
 		UserUsecase:        cfg.UserUsecase,
@@ -32,6 +35,6 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 
 	router.POST("/login", h.Login)
 
-	log.Fatal(http.ListenAndServe(":8052", router))
+	log.Fatal(http.ListenAndServe(":8000", router))
 	return router
 }

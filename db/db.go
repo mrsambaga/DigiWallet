@@ -9,7 +9,7 @@ var db *gorm.DB
 var err error
 
 func ConnectDB() error {
-	dsn := "host=localhost user=radjasa.dzar password=radjasa.dzar dbname=wallet_db_sambaga port=5432 sslmode=disable"
+	dsn := "host=localhost user=radjasa.dzar password=radjasa.dzar dbname=wallet_starter_db port=5432 sslmode=disable"
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return err

@@ -3,7 +3,9 @@ package usecase
 import (
 	"assignment-golang-backend/dto"
 	"assignment-golang-backend/entity"
+	"assignment-golang-backend/httperror"
 	"assignment-golang-backend/repository"
+	"regexp"
 )
 
 type UsersUsecase interface {
@@ -32,6 +34,11 @@ func (u *usersUsecaseImp) Register(newUserDTO *dto.RegisterRequestDTO) (*dto.Reg
 		Password: newUserDTO.Password,
 	}
 
+	validEmail := checkValidEmail(newUser.Email)
+	if !validEmail {
+		return nil, httperror.ErrInvalidRegisterEmail
+	}
+
 	newWallet, err := u.usersRepository.Register(newUser)
 	if err != nil {
 		return nil, err
@@ -46,6 +53,12 @@ func (u *usersUsecaseImp) Register(newUserDTO *dto.RegisterRequestDTO) (*dto.Reg
 	out.Balance = newWallet.Balance
 
 	return out, nil
+}
+
+func checkValidEmail(email string) bool {
+	pattern := `^[a-zA-Z0-9]+@gmail\.com$`
+	valid, _ := regexp.MatchString(pattern, email)
+	return valid
 }
 
 func (u *usersUsecaseImp) Login(loginUserDTO *dto.LoginRequestDTO) (string, error) {
