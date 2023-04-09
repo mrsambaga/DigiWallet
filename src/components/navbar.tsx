@@ -1,46 +1,93 @@
 import React, { useContext } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import '../styles/navbar/navbar.css';
 import { AuthContext } from '../context/authContext';
 
 const Navbar: React.FC = () => {
-  const { authenticated } = useContext(AuthContext);
+  const { authenticated, setAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleClickLogout = () => {
+    setAuthenticated(false);
+    navigate(`/login`);
+  };
 
   return (
     <div className="app">
       <nav className="navbar">
         <h3 className="navbar__title">DigiWallet</h3>
         <ul className="navbar__list">
-          <li className="navbar__list__item-first">Home</li>
-          <li className="navbar__list__item">
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? 'active' : 'nav-link')}
-            >
-              Login
-            </NavLink>
-          </li>
-          <li className="navbar__list__item">
-            <NavLink to="/register" className={'nav-link'}>
-              Register
-            </NavLink>
-          </li>
+          {!authenticated && (
+            <>
+              <li className="navbar__list__item-first">Home</li>
+              <li className="navbar__list__item">
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive ? 'active' : 'nav-link'
+                  }
+                >
+                  Login
+                </NavLink>
+              </li>
+              <li className="navbar__list__item">
+                <NavLink
+                  to="/register"
+                  className={({ isActive }) =>
+                    isActive ? 'active' : 'nav-link'
+                  }
+                >
+                  Register
+                </NavLink>
+              </li>
+            </>
+          )}
           {authenticated && (
             <>
-              <li className="navbar__list__item" id="main">
-                <NavLink to="/">Home</NavLink>
+              <li className="navbar__list__item">
+                <NavLink
+                  to="/home"
+                  className={({ isActive }) =>
+                    isActive ? 'active-main' : 'nav-link-main'
+                  }
+                >
+                  Home
+                </NavLink>
               </li>
-              <li className="navbar__list__item" id="main">
-                Transfer
+              <li className="navbar__list__item">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? 'active-main' : 'nav-link-main'
+                  }
+                >
+                  Transfer
+                </NavLink>
               </li>
-              <li className="navbar__list__item" id="main">
-                Topup
+              <li className="navbar__list__item">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? 'active-main' : 'nav-link-main'
+                  }
+                >
+                  Topup
+                </NavLink>
               </li>
-              <li className="navbar__list__item" id="main">
-                Games
+              <li className="navbar__list__item">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive ? 'active-main' : 'nav-link-main'
+                  }
+                >
+                  Games
+                </NavLink>
               </li>
-              <li className="navbar__list__item" id="main">
-                Logout
+              <li className="navbar__list__item">
+                <button className="logout" onClick={handleClickLogout}>
+                  Logout
+                </button>
               </li>
             </>
           )}

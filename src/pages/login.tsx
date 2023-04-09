@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles/login/login.css';
 import loginLogo from '../img/login-logo.png';
 import Form from '../components/form';
 import Button from '../components/button';
 import useFetchPost from '../hooks/useFetchPost';
-import { notifyError, notifySuccess } from '../components/notification';
+import { notifyError } from '../components/notification';
+import { AuthContext } from '../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
 type LoginForm = {
   email: string;
-  passwod: string;
+  password: string;
 };
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submit, setSubmit] = useState(false);
+  const { setAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -32,11 +36,11 @@ const Login: React.FC = () => {
 
   const submitForm: LoginForm = {
     email: email,
-    passwod: password,
+    password: password,
   };
 
   const { data, error } = useFetchPost(
-    'http://localhost:8000/register',
+    'http://localhost:8000/login',
     submitForm,
     submit,
     () => setSubmit(false),
@@ -44,9 +48,11 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (error != null) {
-      notifyError(error.response.data.message || error.message);
+      notifyError(error.response?.data?.message || error.message);
     } else if (data != null) {
-      notifySuccess(data.data.name);
+      localStorage.setItem('token', data.token);
+      setAuthenticated(true);
+      navigate(`/home`);
     }
   }, [data, error]);
 
