@@ -58,7 +58,6 @@ const Transfer: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log(out);
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
     } else if (out != null) {
