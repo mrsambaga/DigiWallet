@@ -1,7 +1,17 @@
 @use"../var/var";
 
+@mixin font-card {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: 0.2px;
+    color: #000000;
+}
+
 .card {
-    
+
     &__title {
         font-family: 'Montserrat';
         font-style: normal;
@@ -10,6 +20,30 @@
         line-height: 26px;
         letter-spacing: 0.2px;
         color: var.$secondary-text-color;
+        margin-bottom: 10px;
+    }
+
+    &__button {
+        margin-top: 40px;
+        display: flex;
+        gap: 40px;
+
+        & button {
+            width:70px;
+            height: 50px;
+            background-color: transparent;
+            border: 1px solid var.$primary-color;
+            border-radius: 5px;
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 24px;
+            text-align: center;
+            letter-spacing: 0.2px;
+            color: var.$primary-color;
+            cursor: pointer;
+        }
     }
 
     &__container {
@@ -18,6 +52,9 @@
         gap: 13px;
         width: 488px;
         text-align: center;
+        position: absolute;
+        top: 17%;
+        left: 30%;
 
         &__content {
             display: flex;
@@ -28,6 +65,47 @@
             border-radius: 15px;
             align-items: center;
             padding: 50px 40px;
+
+            &__p {
+                display: flex;
+                width: 400px;
+                justify-content: space-between;
+
+                &__left {
+                    left: 0px;
+                    text-align: left;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                }
+
+                &__right {
+                    right: 0px;
+                    text-align: right;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                }
+            }
+
+            & img {
+                margin-bottom: 30px;
+            }
+
+            & h3 {
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 30px;
+                line-height: 26px;
+                text-align: center;
+                letter-spacing: 0.2px;
+                color: #2DC071;
+                margin-bottom: 80px;
+            }
+            
         }
+
+        
     }
 }

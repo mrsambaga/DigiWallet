@@ -1,3 +1,5 @@
+@use"../var/var";
+
 .topup {
     display: flex;
     position: relative;
@@ -25,4 +27,8 @@
             margin-bottom: 35px;
         }
     }
+}
+
+#topup-active {
+    background-color: #F5F5F5;
 }

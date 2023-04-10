@@ -20,7 +20,7 @@ const Register: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [submit, setSubmit] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -35,12 +35,12 @@ const Register: React.FC = () => {
   };
 
   const handleClickSubmit = () => {
-    if (!submit) {
-      setSubmit(true);
+    if (!isSubmit) {
+      setIsSubmit(true);
     }
   };
 
-  const submitForm: RegisterBody = {
+  const body: RegisterBody = {
     name: name,
     email: email,
     password: password,
@@ -48,9 +48,9 @@ const Register: React.FC = () => {
 
   const { out, error } = useFetchPost(
     'http://localhost:8000/register',
-    submitForm,
-    submit,
-    () => setSubmit(false),
+    body,
+    isSubmit,
+    () => setIsSubmit(false),
   );
 
   useEffect(() => {

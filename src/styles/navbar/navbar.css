@@ -15,6 +15,7 @@
   color: #000000;
   left: 15%;
   position: absolute;
+  z-index: 3;
 }
 .navbar__list {
   display: flex;
