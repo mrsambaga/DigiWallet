@@ -1,0 +1,46 @@
+.games {
+  position: relative;
+}
+.games__container {
+  display: flex;
+  flex-direction: column;
+}
+.games__container__table {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  width: 560px;
+  position: relative;
+  left: 30%;
+}
+.games__container__table h1 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 26px;
+  letter-spacing: 0.2px;
+  color: #000000;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.games__container__table__box {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-top: 34px;
+}
+.games__container__table__box__row {
+  display: flex;
+  gap: 50px;
+}
+.games__container__table__box button {
+  background: #FFFFFF;
+  border: 1px solid #939393;
+  box-shadow: 0px 13px 19px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  width: 150px;
+  height: 150px;
+}/*# sourceMappingURL=games.css.map */

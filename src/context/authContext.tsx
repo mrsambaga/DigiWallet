@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode } from 'react';
 import { useState } from 'react';
+import { GetCookie } from '../function/cookies';
 
 type Props = {
   children?: ReactNode;
@@ -11,7 +12,7 @@ type iAuthContext = {
 };
 
 const initialValue = {
-  authenticated: localStorage.getItem('token') ? true : false,
+  authenticated: GetCookie('token') ? true : false,
   setAuthenticated: () => {},
 };
 

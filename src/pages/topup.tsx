@@ -7,6 +7,7 @@ import SuccessCard from '../components/successCard';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
 import { TransactionResponse } from '../types/types';
+import { GetCookie } from '../function/cookies';
 
 type TopupForm = {
   amount: number | string;
@@ -15,7 +16,7 @@ type TopupForm = {
 
 const Topup: React.FC = () => {
   const walletNumber = localStorage.getItem('wallet_number');
-  const token = localStorage.getItem('token');
+  const token = GetCookie('token');
   const [sourceFunds, setSourceFunds] = useState(1);
   const [amount, setAmount] = useState('');
   const [submit, setSubmit] = useState(false);

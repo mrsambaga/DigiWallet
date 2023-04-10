@@ -7,6 +7,7 @@ import useFetchPost from '../hooks/useFetchPost';
 import { NotifContainer, notifyError } from '../components/notification';
 import { AuthContext } from '../context/authContext';
 import { useNavigate } from 'react-router-dom';
+import { SetCookie } from '../function/cookies';
 
 type LoginForm = {
   email: string;
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
     } else if (out != null) {
-      localStorage.setItem('token', out.token);
+      SetCookie('token', out.token, 1);
       setAuthenticated(true);
       navigate(`/`);
     }

@@ -5,6 +5,7 @@ import { notifyError } from '../components/notification';
 import { ProfileResponse } from '../types/types';
 import { decodeToken } from 'react-jwt';
 import { Claims } from '../types/types';
+import '../styles/games/games.css';
 
 const Games: React.FC = () => {
   const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
@@ -45,10 +46,32 @@ const Games: React.FC = () => {
   }, [out, error]);
 
   return (
-    <div className="home">
-      <div className="home__container">
-        <Title idName="games" contentProps={profileResponse!} />
-        <div className="home__container__table">Ini Table</div>
+    <div className="games">
+      <div className="games__container">
+        <Title idName="games-title" contentProps={profileResponse!} />
+        <div className="games__container__table">
+          <h1>Games</h1>
+          <p>Choose random box below to get reward!</p>
+          <p>Chance : 3</p>
+          <p>Check Leaderboard</p>
+          <div className="games__container__table__box">
+            <div className="games__container__table__box__row">
+              <button>1</button>
+              <button>2</button>
+              <button>3</button>
+            </div>
+            <div className="games__container__table__box__row">
+              <button>4</button>
+              <button>5</button>
+              <button>6</button>
+            </div>
+            <div className="games__container__table__box__row">
+              <button>7</button>
+              <button>8</button>
+              <button>9</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

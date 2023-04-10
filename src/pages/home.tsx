@@ -6,6 +6,7 @@ import { notifyError } from '../components/notification';
 import { ProfileResponse } from '../types/types';
 import Title from '../components/title';
 import { Claims } from '../types/types';
+import { GetCookie } from '../function/cookies';
 
 const Home: React.FC = () => {
   const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
@@ -16,12 +17,12 @@ const Home: React.FC = () => {
     WalletId: 0,
     WalletNumber: 0,
   });
-  const token = localStorage.getItem('token');
+  const token = GetCookie('token');
   const claims: Claims | null = token ? decodeToken(token!) : null;
   const userId = claims?.id;
   const { out, error } = useFetchGet(
     `http://localhost:8000/users/${userId}`,
-    token!,
+    token,
   );
 
   useEffect(() => {

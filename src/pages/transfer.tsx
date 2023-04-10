@@ -5,6 +5,7 @@ import useFetchPost from '../hooks/useFetchPost';
 import SuccessCard from '../components/successCard';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
+import { GetCookie } from '../function/cookies';
 
 type TransferForm = {
   amount: number | string;
@@ -21,7 +22,7 @@ export type TransferResponse = {
 
 const Transfer: React.FC = () => {
   const walletNumber = localStorage.getItem('wallet_number');
-  const token = localStorage.getItem('token');
+  const token = GetCookie('token');
   const [sourceFunds] = useState(1);
   const [amount, setAmount] = useState('');
   const [submit, setSubmit] = useState(false);
