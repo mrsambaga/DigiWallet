@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
 export type FetchData = {
-  data: any | null;
+  out: any | null;
   loading: boolean;
   error: any | null;
 };
@@ -12,8 +12,9 @@ const useFetchPost = <T,>(
   body: T,
   submit: boolean,
   toggleSubmit: () => void,
+  token?: string,
 ): FetchData => {
-  const [data, setData] = useState<any | null>(null);
+  const [out, setOut] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
 
@@ -22,8 +23,10 @@ const useFetchPost = <T,>(
       setLoading(true);
       const fetchData = async () => {
         try {
-          const response = await axios.post(url, body);
-          setData(response?.data);
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          const config = { headers };
+          const response = await axios.post(url, body, config);
+          setOut(response?.data);
           setError(null);
         } catch (error) {
           setError(error as AxiosError);
@@ -36,7 +39,7 @@ const useFetchPost = <T,>(
     }
   }, [submit]);
 
-  return { data, loading, error };
+  return { out, loading, error };
 };
 
 export default useFetchPost;

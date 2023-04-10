@@ -1,0 +1,26 @@
+.card__title {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 26px;
+  letter-spacing: 0.2px;
+  color: #737373;
+}
+.card__container {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  width: 488px;
+  text-align: center;
+}
+.card__container__content {
+  display: flex;
+  flex-direction: column;
+  height: 574px;
+  background: #FFFFFF;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  align-items: center;
+  padding: 50px 40px;
+}/*# sourceMappingURL=successCard.css.map */

@@ -3,7 +3,7 @@ import React from 'react';
 const Unauthenticated: React.FC = () => {
   return (
     <div>
-      <h1>Unautenthicated !</h1>
+      <h1>Unauthenticated !</h1>
     </div>
   );
 };

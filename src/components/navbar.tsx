@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
 
   const handleClickLogout = () => {
     setAuthenticated(false);
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate(`/login`);
   };
 
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
             <>
               <li className="navbar__list__item">
                 <NavLink
-                  to="/home"
+                  to="/"
                   className={({ isActive }) =>
                     isActive ? 'active-main' : 'nav-link-main'
                   }

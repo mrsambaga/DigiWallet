@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     password: password,
   };
 
-  const { data, error } = useFetchPost(
+  const { out, error } = useFetchPost(
     'http://localhost:8000/login',
     submitForm,
     submit,
@@ -49,12 +49,12 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
-    } else if (data != null) {
-      localStorage.setItem('token', data.token);
+    } else if (out != null) {
+      localStorage.setItem('token', out.token);
       setAuthenticated(true);
-      navigate(`/home`);
+      navigate(`/`);
     }
-  }, [data, error]);
+  }, [out, error]);
 
   return (
     <div className="login">

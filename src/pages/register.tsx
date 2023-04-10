@@ -46,7 +46,7 @@ const Register: React.FC = () => {
     password: password,
   };
 
-  const { data, error } = useFetchPost(
+  const { out, error } = useFetchPost(
     'http://localhost:8000/register',
     submitForm,
     submit,
@@ -56,10 +56,10 @@ const Register: React.FC = () => {
   useEffect(() => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
-    } else if (data != null) {
-      notifySuccess(data.data.name);
+    } else if (out != null) {
+      notifySuccess(out.data.name);
     }
-  }, [data, error]);
+  }, [out, error]);
 
   return (
     <div className="register">

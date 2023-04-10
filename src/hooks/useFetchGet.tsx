@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export type FetchData = {
-  data: any;
+  out: any;
   loading: boolean;
   error: any;
 };
 
 const useFetchGet = (url: string, token?: string): FetchData => {
-  const [data, setData] = useState<any | null>(null);
+  const [out, setOut] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any | null>(null);
 
@@ -19,7 +19,7 @@ const useFetchGet = (url: string, token?: string): FetchData => {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const config = { headers };
         const response = await axios.get(url, config);
-        setData(response?.data);
+        setOut(response?.data);
       } catch (error) {
         setError(error);
       } finally {
@@ -29,7 +29,7 @@ const useFetchGet = (url: string, token?: string): FetchData => {
     fetchData();
   }, [url]);
 
-  return { data, loading, error };
+  return { out, loading, error };
 };
 
 export default useFetchGet;

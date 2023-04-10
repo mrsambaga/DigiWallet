@@ -13,6 +13,20 @@
         margin-bottom: 16px;
     }
 
+    &__error {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 28px;
+        letter-spacing: 0.2px;
+        color: #EB5757;
+        flex: none;
+        order: 2;
+        flex-grow: 0;
+        margin-top: 5px;
+    }
+
     &__container {
         width: 100%;
 
@@ -34,7 +48,29 @@
             letter-spacing: 0.2px;
             color: #737373;
         }
-    }
 
+        &__input-read {
+            width: 100%;
+            height: 50px;
+            background-color: #F5F5F5;
+            border: 1px solid #4F4F4F;
+            border-radius: 5px;
+            padding-left: 20px;
+        }
+    
+         &__input-read::placeholder {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 28px;
+            letter-spacing: 0.2px;
+            color: #737373;
+        }
+
+        #show-error {
+            border: 1px solid red;
+        }
+    }
     
 }
