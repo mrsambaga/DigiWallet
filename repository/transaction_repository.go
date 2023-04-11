@@ -3,12 +3,13 @@ package repository
 import (
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/httperror"
+	"strconv"
 
 	"gorm.io/gorm"
 )
 
 type TransactionRepository interface {
-	GetTransaction(userId uint64) ([]*entity.Transaction, error)
+	GetTransaction(userId uint64, sort string, limit string, search string) ([]*entity.Transaction, error)
 	Transaction(transaction *entity.Transaction, userId uint64) (*entity.Transaction, error)
 }
 
@@ -26,17 +27,28 @@ func NewTransactionRepository(cfg *TransactionRConfig) TransactionRepository {
 	}
 }
 
-func (r *transactionRepoImp) GetTransaction(userId uint64) ([]*entity.Transaction, error) {
+func (r *transactionRepoImp) GetTransaction(userId uint64, sort string, limit string, search string) ([]*entity.Transaction, error) {
 	var userWallet entity.Wallet
-	if err := r.db.Where("user_id = ?", userId).First(&userWallet); err != nil {
+	if err := r.db.Where("user_id = ?", userId).First(&userWallet).Error; err != nil {
 		return nil, httperror.ErrWalletNotFound
 	}
 
 	var transactions []*entity.Transaction
-	r.db.Where("source_wallet_number = ?", userWallet.WalletNumber).Or("target_wallet_number", userWallet.WalletNumber).
-		Order("created_at DESC").
-		Limit(10).
-		Find(&transactions)
+	transaction := r.db.Where("source_wallet_number = ?", userWallet.WalletNumber).Or("target_wallet_number", userWallet.WalletNumber).Where("description LIKE ? ", "%"+search+"%")
+	if sort != " " {
+		transaction = transaction.Order(sort)
+	}
+	if limit != "" {
+		limitInt, err := strconv.Atoi(limit)
+		if err != nil {
+			return nil, httperror.ErrInvalidLimit
+		}
+		transaction = transaction.Limit(limitInt)
+	} else {
+		transaction = transaction.Limit(10)
+	}
+
+	transaction.Find(&transactions)
 
 	return transactions, nil
 }

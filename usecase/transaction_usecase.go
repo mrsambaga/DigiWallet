@@ -8,7 +8,7 @@ import (
 )
 
 type TransactionUsecase interface {
-	GetUserTransactions(userId uint64) ([]*entity.Transaction, error)
+	GetUserTransactions(userId uint64, sort string, limit string, search string) ([]*entity.Transaction, error)
 	Topup(newTopUp *dto.TopupRequestDTO, userId uint64) (*dto.TopupResponseDTO, error)
 	Transfer(newTransfer *dto.TransferRequestDTO, userId uint64) (*dto.TransferResponseDTO, error)
 }
@@ -27,8 +27,9 @@ func NewTransactionUsecase(cfg *TransactionUConfig) TransactionUsecase {
 	}
 }
 
-func (u *transactionUImp) GetUserTransactions(userId uint64) ([]*entity.Transaction, error) {
-	transactions, err := u.transactionRepository.GetTransaction(userId)
+func (u *transactionUImp) GetUserTransactions(userId uint64, sort string, limit string, search string) ([]*entity.Transaction, error) {
+
+	transactions, err := u.transactionRepository.GetTransaction(userId, sort, limit, search)
 	if err != nil {
 		return nil, err
 	}

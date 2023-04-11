@@ -26,10 +26,11 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 		TransactionUsecase: cfg.TransactionUsecase,
 	})
 
-	router.GET("/users/:user-id", middleware.AuthorizeJWT, h.GetDetail)
-	router.GET("/users/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
-	router.POST("/users/topup", middleware.AuthorizeJWT, h.Topup)
-	router.POST("/users/transfer", middleware.AuthorizeJWT, h.Transfer)
+	router.GET("/profile", middleware.AuthorizeJWT, h.GetSelfDetailHandler)
+	router.GET("/inquiry/:user-id", middleware.AuthorizeJWT, h.GetOtherDetailHandler)
+	router.GET("/profile/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
+	router.POST("/topup", middleware.AuthorizeJWT, h.Topup)
+	router.POST("/transfer", middleware.AuthorizeJWT, h.Transfer)
 	router.POST("/register", h.Register)
 	router.POST("/login", h.Login)
 
