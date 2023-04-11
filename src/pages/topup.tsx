@@ -17,7 +17,7 @@ type TopupForm = {
 const Topup: React.FC = () => {
   const walletNumber = localStorage.getItem('wallet_number');
   const token = GetCookie('token');
-  const [sourceFunds, setSourceFunds] = useState(1);
+  const [sourceFunds, setSourceFunds] = useState(1001);
   const [amount, setAmount] = useState('');
   const [submit, setSubmit] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -38,11 +38,11 @@ const Topup: React.FC = () => {
   ) => {
     const category: string = event.target.value;
     if (category == 'bank transfer') {
-      setSourceFunds(1);
+      setSourceFunds(1001);
     } else if (category == 'credit card') {
-      setSourceFunds(2);
+      setSourceFunds(1002);
     } else if (category == 'cash') {
-      setSourceFunds(3);
+      setSourceFunds(1003);
     }
   };
 
@@ -73,7 +73,7 @@ const Topup: React.FC = () => {
         Amount: out.data.amount,
         TransactionId: out.data.transaction_id,
         From: out.data.source_of_funds,
-        To: Number(walletNumber),
+        To: out.data.target_wallet_number,
         Description: out.data.description,
       };
       setTopupResponse(topupResponse);
@@ -91,11 +91,12 @@ const Topup: React.FC = () => {
         <SuccessCard
           toggleSuccess={closeSuccessCard}
           contentProps={topupResponse}
+          type="topup"
         />
       ) : (
         <div className="topup__container">
           <h1>Top Up</h1>
-          <Dropdown label="From" onChange={handleCategoryChange} />
+          <Dropdown label="To" onChange={handleCategoryChange} />
           <Form
             label="To"
             placeholder={walletNumber ? walletNumber : ''}

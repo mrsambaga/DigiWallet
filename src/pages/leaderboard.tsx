@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/home/home.css';
+import Title from '../components/title';
 import useFetchGet from '../hooks/useFetchGet';
-import { decodeToken } from 'react-jwt';
 import { notifyError } from '../components/notification';
 import { ProfileResponse } from '../types/types';
-import Title from '../components/title';
+import { decodeToken } from 'react-jwt';
 import { Claims } from '../types/types';
 import { GetCookie } from '../function/cookies';
-import TransactionTable from '../components/table';
-import Dropdown from '../components/dropDown';
-import Form from '../components/form';
+import '../styles/games/games.css';
+import { NavLink } from 'react-router-dom';
 
-const Home: React.FC = () => {
+const Leaderboard: React.FC = () => {
   const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
     Balance: 0,
     Email: '',
@@ -24,7 +22,7 @@ const Home: React.FC = () => {
   const userId = claims?.id;
   const { out, error } = useFetchGet(
     `http://localhost:8000/users/${userId}`,
-    token,
+    token!,
   );
 
   useEffect(() => {
@@ -47,23 +45,18 @@ const Home: React.FC = () => {
     }
   }, [out, error]);
 
-  const changeShow = () => {};
-
   return (
-    <div className="home">
-      <div className="home__container">
-        <Title contentProps={profileResponse!} />
-        <div className="home__container__sorting">
-          <Dropdown label="" onChange={changeShow} />
-          <Dropdown label="" onChange={changeShow} />
-          <Form label="" placeholder="Search" />
-        </div>
-        <div className="home__container__table">
-          <TransactionTable />
+    <div className="games">
+      <div className="games__container">
+        <Title idName="games-title" contentProps={profileResponse!} />
+        <div className="games__container__table">
+          <h1>Leaderboard</h1>
+          <NavLink to="/games">Back to Games</NavLink>
+          <div className="games__container__table__box"></div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Leaderboard;

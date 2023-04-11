@@ -1,0 +1,26 @@
+.table {
+  width: 1040px;
+  height: 543px;
+  text-align: left;
+  margin: auto;
+}
+.table__head th {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 49px;
+  letter-spacing: 0.1px;
+  color: #252B42;
+  padding: 7px 20px;
+}
+.table__body td {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: 0.2px;
+  color: #252B42;
+  padding: 10px 20px;
+}/*# sourceMappingURL=table.css.map */

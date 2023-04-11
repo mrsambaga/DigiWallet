@@ -5,7 +5,9 @@ import { notifyError } from '../components/notification';
 import { ProfileResponse } from '../types/types';
 import { decodeToken } from 'react-jwt';
 import { Claims } from '../types/types';
+import { GetCookie } from '../function/cookies';
 import '../styles/games/games.css';
+import { NavLink } from 'react-router-dom';
 
 const Games: React.FC = () => {
   const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
@@ -13,10 +15,9 @@ const Games: React.FC = () => {
     Email: '',
     UserId: 0,
     UserName: '',
-    WalletId: 0,
     WalletNumber: 0,
   });
-  const token = localStorage.getItem('token');
+  const token = GetCookie('token');
   const claims: Claims | null = token ? decodeToken(token!) : null;
   const userId = claims?.id;
   const { out, error } = useFetchGet(
@@ -36,7 +37,6 @@ const Games: React.FC = () => {
         Email: out.data.email,
         UserId: out.data.user_id,
         UserName: out.data.user_name,
-        WalletId: out.data.wallet_id,
         WalletNumber: out.data.wallet_number,
       };
 
@@ -53,7 +53,7 @@ const Games: React.FC = () => {
           <h1>Games</h1>
           <p>Choose random box below to get reward!</p>
           <p>Chance : 3</p>
-          <p>Check Leaderboard</p>
+          <NavLink to="/leaderboard">Check Leaderboard</NavLink>
           <div className="games__container__table__box">
             <div className="games__container__table__box__row">
               <button>1</button>

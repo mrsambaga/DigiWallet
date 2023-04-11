@@ -12,6 +12,7 @@ import Topup from './pages/topup';
 import Transfer from './pages/transfer';
 import Games from './pages/games';
 import Unauthenticated from './pages/unauthenticated';
+import Leaderboard from './pages/leaderboard';
 
 const App: React.FC = () => {
   const PrivateRoutes = () => {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
               <Route path="/topup" element={<Topup />} />
               <Route path="/transfer" element={<Transfer />} />
               <Route path="/games" element={<Games />} />
+              <Route path="/leaderboard" element={<Leaderboard />}></Route>
             </Route>
           </Route>
           <Route path="*" element={<h1>404</h1>}></Route>

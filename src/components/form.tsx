@@ -30,7 +30,7 @@ const Form: React.FC<FormProps> = ({
     } else if (!activity && label == 'Password') {
       setShowError(true);
       setErrorMessage('Please enter your password');
-    } else if (!activity && label == 'To') {
+    } else if (!activity && label == 'To' && !isReadOnly) {
       setShowError(true);
       setErrorMessage('Please enter transfer destination');
     }

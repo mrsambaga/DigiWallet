@@ -15,6 +15,18 @@
             position: relative;
             left: 30%;
 
+            & a {
+                font-family: 'Montserrat';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 26px;
+                text-align: center;
+                letter-spacing: 0.2px;
+                text-decoration-line: underline;
+                color: #000000;
+            }
+
             & h1 {
                 font-family: 'Montserrat';
                 font-style: normal;

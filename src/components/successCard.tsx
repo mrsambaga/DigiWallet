@@ -3,26 +3,35 @@ import '../styles/successCard/successCard.css';
 import successLogo from '../img/icon-success.png';
 import { TransactionResponse } from '../types/types';
 
-type ButtonProps = {
+type CardProps = {
   toggleSuccess: (success: boolean) => void;
   contentProps: TransactionResponse;
+  type: string;
 };
 
-const SuccessCard: React.FC<ButtonProps> = ({
+const SuccessCard: React.FC<CardProps> = ({
   toggleSuccess,
   contentProps,
+  type,
 }) => {
   const onClickClose = () => {
     toggleSuccess(false);
   };
 
+  let cardType = '';
+  if (type == 'topup') {
+    cardType = 'Top Up';
+  } else if (type == 'transfer') {
+    cardType = 'Transfer';
+  }
+
   return (
     <div className="card">
       <div className="card__container">
-        <h3 className="card__title">Top Up</h3>
+        <h3 className="card__title">{cardType}</h3>
         <div className="card__container__content">
           <img src={successLogo} alt="success" className="card__img" />
-          <h3>Top Up Success</h3>
+          <h3>{cardType} Success</h3>
           <div className="card__container__content__p">
             <div className="card__container__content__p__left">
               <p>Amount</p>
