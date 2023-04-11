@@ -18,7 +18,7 @@ func GenerateAccessToken(user *entity.User) (*dto.TokenResponse, error) {
 		"email": user.Email,
 		"iss":   "Wallet",
 		"iat":   time.Now().Unix(),
-		"exp":   time.Now().Add(time.Hour * 12).Unix(),
+		"exp":   time.Now().Add(time.Hour * 2).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

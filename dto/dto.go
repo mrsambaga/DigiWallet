@@ -52,9 +52,23 @@ type TopupRequestDTO struct {
 }
 
 type TopupResponseDTO struct {
-	Amount         float64 `json:"amount"`
-	TransactionId  uint64  `json:"transaction_id"`
-	SourceId       uint64  `json:"source_of_funds"`
-	TargetWalletId uint64  `json:"target_wallet_id"`
-	Description    string  `json:"description"`
+	Amount             float64 `json:"amount"`
+	TransactionId      uint64  `json:"transaction_id"`
+	SourceId           uint64  `json:"source_of_funds"`
+	TargetWalletNumber uint64  `json:"target_wallet_id"`
+	Description        string  `json:"description"`
+}
+
+type TransferRequestDTO struct {
+	Amount             float64 `json:"amount" binding:"required"`
+	TargetWalletNumber uint64  `json:"target_wallet_number" binding:"required"`
+	Description        string  `json:"description"`
+}
+
+type TransferResponseDTO struct {
+	Amount             float64 `json:"amount"`
+	TransactionId      uint64  `json:"transaction_id"`
+	SourceWalletNumber uint64  `json:"source_wallet_id"`
+	TargetWalletNumber uint64  `json:"target_wallet_id"`
+	Description        string  `json:"description"`
 }

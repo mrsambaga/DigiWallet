@@ -57,7 +57,7 @@ func (r *userRepositoryImp) NewWallet(user *entity.User) *entity.Wallet {
 	var walletNumber uint64
 
 	if err := r.db.Order("wallet_number desc").First(&lastWallet).Error; err != nil {
-		walletNumber = 123000000000
+		walletNumber = 1230000000001
 	} else {
 		walletNumber = lastWallet.WalletNumber + 1
 	}
