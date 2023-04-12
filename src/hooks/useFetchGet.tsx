@@ -7,7 +7,11 @@ export type FetchData = {
   error: any;
 };
 
-const useFetchGet = (url: string, token?: string): FetchData => {
+const useFetchGet = (
+  url: string,
+  token?: string,
+  propsChange?: boolean,
+): FetchData => {
   const [out, setOut] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any | null>(null);
@@ -27,7 +31,7 @@ const useFetchGet = (url: string, token?: string): FetchData => {
       }
     };
     fetchData();
-  }, [url]);
+  }, [url, propsChange]);
 
   return { out, loading, error };
 };

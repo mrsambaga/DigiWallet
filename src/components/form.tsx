@@ -4,6 +4,7 @@ import '../styles/form/form.css';
 type FormProps = {
   label: string;
   placeholder: string;
+  inputType: string;
   value?: string | number;
   isReadOnly?: boolean;
   onChangeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,6 +14,7 @@ const Form: React.FC<FormProps> = ({
   label,
   placeholder,
   value,
+  inputType,
   onChangeHandler,
   isReadOnly = false,
 }) => {
@@ -50,7 +52,7 @@ const Form: React.FC<FormProps> = ({
       <label className="form__label">{label}</label>
       <div className="form__container">
         <input
-          type="text"
+          type={inputType}
           placeholder={placeholder}
           value={value}
           onChange={handleOnChange}

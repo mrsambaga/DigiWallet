@@ -5,7 +5,7 @@ import useFetchPost from '../hooks/useFetchPost';
 import SuccessCard from '../components/modal';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
-import { GetCookie } from '../function/cookies';
+import { GetCookie } from '../helper/cookies';
 import { TransferResponse } from '../types/types';
 
 type TransferForm = {
@@ -91,7 +91,7 @@ const Transfer: React.FC = () => {
         <SuccessCard
           toggleSuccess={closeSuccessCard}
           contentProps={transferResponse}
-          type="transfer"
+          label="Transfer"
         />
       ) : (
         <div className="topup__container">
@@ -100,24 +100,28 @@ const Transfer: React.FC = () => {
             label="From"
             placeholder={walletNumber ? walletNumber : ''}
             isReadOnly={true}
+            inputType="number"
           />
           <Form
             label="To"
             placeholder="1230000000001"
             value={targetWallet!}
             onChangeHandler={handleTargetWalletChange}
+            inputType="number"
           />
           <Form
             label="Amount"
             placeholder="1.000.000.000"
             value={amount}
             onChangeHandler={handleAmountChange}
+            inputType="number"
           />
           <Form
             label="Description"
             placeholder="Bayar Hutang"
             value={description}
             onChangeHandler={handleDescChange}
+            inputType="text"
           />
           <Button label="Transfer" onClickHandler={handleClickTransfer} />
         </div>

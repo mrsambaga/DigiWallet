@@ -43,3 +43,14 @@ export type DropdownOption = {
   content: string;
   value: string;
 };
+
+export type Boxes = {
+  BoxId: number;
+  Prize: number;
+};
+
+export type LeaderboardResp = {
+  Id: number;
+  Name: string;
+  TotalWinning: number;
+};

@@ -4,7 +4,7 @@ import useFetchGet from '../hooks/useFetchGet';
 import { notifyError } from '../components/notification';
 import { DropdownOption, ProfileResponse } from '../types/types';
 import Title from '../components/title';
-import { GetCookie } from '../function/cookies';
+import { GetCookie } from '../helper/cookies';
 import TransactionTable from '../components/table';
 import Dropdown from '../components/dropDown';
 import Form from '../components/form';
@@ -142,6 +142,7 @@ const Home: React.FC = () => {
               label=""
               placeholder="Search"
               onChangeHandler={handleSearchChange}
+              inputType="text"
             />
           </div>
         </div>

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import '../styles/navbar/navbar.css';
 import { AuthContext } from '../context/authContext';
-import { SetCookie } from '../function/cookies';
+import { SetCookie } from '../helper/cookies';
 
 const Navbar: React.FC = () => {
   const { authenticated, setAuthenticated } = useContext(AuthContext);

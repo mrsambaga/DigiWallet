@@ -2,36 +2,32 @@ import React from 'react';
 import '../styles/successCard/successCard.css';
 import successLogo from '../img/icon-success.png';
 import { TransactionResponse } from '../types/types';
+import { useNavigate } from 'react-router-dom';
 
 type CardProps = {
   toggleSuccess: (success: boolean) => void;
   contentProps: TransactionResponse;
-  type: string;
+  label: string;
 };
 
 const SuccessCard: React.FC<CardProps> = ({
   toggleSuccess,
   contentProps,
-  type,
+  label,
 }) => {
-  const onClickClose = () => {
+  const navigate = useNavigate();
+  const onClickModal = () => {
+    navigate('/');
     toggleSuccess(false);
   };
-
-  let cardType = '';
-  if (type == 'topup') {
-    cardType = 'Top Up';
-  } else if (type == 'transfer') {
-    cardType = 'Transfer';
-  }
 
   return (
     <div className="card">
       <div className="card__container">
-        <h3 className="card__title">{cardType}</h3>
+        <h3 className="card__title">{label}</h3>
         <div className="card__container__content">
           <img src={successLogo} alt="success" className="card__img" />
-          <h3>{cardType} Success</h3>
+          <h3>{label} Success</h3>
           <div className="card__container__content__p">
             <div className="card__container__content__p__left">
               <p>Amount</p>
@@ -49,8 +45,8 @@ const SuccessCard: React.FC<CardProps> = ({
             </div>
           </div>
           <div className="card__button">
-            <button>Print</button>
-            <button onClick={onClickClose}>Close</button>
+            <button onClick={onClickModal}>Print</button>
+            <button onClick={onClickModal}>Close</button>
           </div>
         </div>
       </div>

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Title from '../components/title';
 import useFetchGet from '../hooks/useFetchGet';
 import { notifyError } from '../components/notification';
-import { ProfileResponse } from '../types/types';
-import { GetCookie } from '../function/cookies';
+import { LeaderboardResp, ProfileResponse } from '../types/types';
+import { GetCookie } from '../helper/cookies';
 import '../styles/games/games.css';
 import { NavLink } from 'react-router-dom';
 
@@ -16,27 +16,49 @@ const Leaderboard: React.FC = () => {
     WalletNumber: 0,
   });
   const token = GetCookie('token');
-  const { out, error } = useFetchGet(`http://localhost:8000/profile`, token!);
+  const { out: outProfile, error: outError } = useFetchGet(
+    `http://localhost:8000/profile`,
+    token!,
+  );
 
   useEffect(() => {
-    if (error) {
-      notifyError(error.response?.data?.message || error.message);
+    if (outError) {
+      notifyError(outError.response?.data?.message || outError.message);
       return;
     }
 
-    if (out != null) {
+    if (outProfile != null) {
       const profileResponse: ProfileResponse = {
-        Balance: out.data.balance,
-        Email: out.data.email,
-        UserId: out.data.user_id,
-        UserName: out.data.user_name,
-        WalletNumber: out.data.wallet_number,
+        Balance: outProfile.data.balance,
+        Email: outProfile.data.email,
+        UserId: outProfile.data.user_id,
+        UserName: outProfile.data.user_name,
+        WalletNumber: outProfile.data.wallet_number,
       };
 
-      localStorage.setItem('wallet_number', out.data.wallet_number);
+      localStorage.setItem('wallet_number', outProfile.data.wallet_number);
       setProfileResponse(profileResponse);
     }
-  }, [out, error]);
+  }, [outProfile, outError]);
+
+  const [leaderboard, setLeaderBoard] = useState<LeaderboardResp[]>([]);
+  const { out: outLeaderboard, error: errorLeaderboard } = useFetchGet(
+    `http://localhost:8000/leaderboard`,
+    token!,
+  );
+
+  useEffect(() => {
+    if (errorLeaderboard) {
+      notifyError(
+        errorLeaderboard.response?.data?.message || errorLeaderboard.message,
+      );
+      return;
+    }
+
+    if (outLeaderboard != null) {
+      setLeaderBoard(outLeaderboard.data);
+    }
+  }, [outLeaderboard, errorLeaderboard]);
 
   return (
     <div className="games">
@@ -45,7 +67,9 @@ const Leaderboard: React.FC = () => {
         <div className="games__container__table">
           <h1>Leaderboard</h1>
           <NavLink to="/games">Back to Games</NavLink>
-          <div className="games__container__table__box"></div>
+          {leaderboard.map((board) => (
+            <h3 key={board.Name}>{board.Name}</h3>
+          ))}
         </div>
       </div>
     </div>

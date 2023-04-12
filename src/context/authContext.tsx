@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode } from 'react';
 import { useState } from 'react';
-import { GetCookie } from '../function/cookies';
+import { GetCookie } from '../helper/cookies';
 
 type Props = {
   children?: ReactNode;

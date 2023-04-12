@@ -7,7 +7,7 @@ import useFetchPost from '../hooks/useFetchPost';
 import { NotifContainer, notifyError } from '../components/notification';
 import { AuthContext } from '../context/authContext';
 import { useNavigate } from 'react-router-dom';
-import { SetCookie } from '../function/cookies';
+import { SetCookie } from '../helper/cookies';
 import { Navigate } from 'react-router-dom';
 
 type LoginForm = {
@@ -40,14 +40,14 @@ const Login: React.FC = () => {
     }
   };
 
-  const submitForm: LoginForm = {
+  const body: LoginForm = {
     email: email,
     password: password,
   };
 
   const { out, error } = useFetchPost(
     'http://localhost:8000/login',
-    submitForm,
+    body,
     submit,
     () => setSubmit(false),
   );
@@ -56,7 +56,7 @@ const Login: React.FC = () => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
     } else if (out != null) {
-      SetCookie('token', out.token, 1);
+      SetCookie('token', out.data, 1);
       setAuthenticated(true);
       navigate(`/`);
     }
@@ -73,12 +73,14 @@ const Login: React.FC = () => {
               placeholder="asep.bc@gmail.com"
               value={email}
               onChangeHandler={handleEmailChange}
+              inputType="text"
             />
             <Form
               label="Password"
               placeholder="***********"
               value={password}
               onChangeHandler={handlePasswordChange}
+              inputType="text"
             />
             <Button label="Submit" onClickHandler={handleClickSubmit} />
           </div>

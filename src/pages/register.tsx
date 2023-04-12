@@ -79,18 +79,21 @@ const Register: React.FC = () => {
               placeholder="Asep Budiantoro Chandradiman"
               value={name}
               onChangeHandler={handleNameChange}
+              inputType="text"
             />
             <Form
               label="Email"
               placeholder="asep.bc@gmail.com"
               value={email}
               onChangeHandler={handleEmailChange}
+              inputType="text"
             />
             <Form
               label="Password"
               placeholder="***********"
               value={password}
               onChangeHandler={handlePasswordChange}
+              inputType="text"
             />
             <Button label="Submit" onClickHandler={handleClickSubmit} />
           </div>

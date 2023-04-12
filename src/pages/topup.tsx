@@ -7,7 +7,7 @@ import SuccessCard from '../components/modal';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
 import { DropdownOption, TransactionResponse } from '../types/types';
-import { GetCookie } from '../function/cookies';
+import { GetCookie } from '../helper/cookies';
 
 type TopupForm = {
   amount: number | string;
@@ -106,13 +106,13 @@ const Topup: React.FC = () => {
         <SuccessCard
           toggleSuccess={closeSuccessCard}
           contentProps={topupResponse}
-          type="topup"
+          label="Top Up"
         />
       ) : (
         <div className="topup__container">
           <h1>Top Up</h1>
           <Dropdown
-            label="To"
+            label="From"
             onChange={handleCategoryChange}
             dropdownOptions={topupDropdown}
           />
@@ -120,12 +120,14 @@ const Topup: React.FC = () => {
             label="To"
             placeholder={walletNumber ? walletNumber : ''}
             isReadOnly={true}
+            inputType="number"
           />
           <Form
             label="Amount"
             placeholder="1.000.000.000"
             value={amount}
             onChangeHandler={handleAmountChange}
+            inputType="number"
           />
           <Button label="Topup" onClickHandler={handleClickTopup} />
         </div>
