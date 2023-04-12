@@ -15,11 +15,16 @@ func (h *Handler) GetSelfDetailHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    "INTERNAL_SERVER_ERROR",
 			"message": err.Error(),
+			"data":    nil,
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": wallet})
+	c.JSON(http.StatusOK, gin.H{
+		"code":    "SUCCESS_CREATED",
+		"message": "Success get self detail",
+		"data":    wallet,
+	})
 }
 
 func (h *Handler) GetOtherDetailHandler(c *gin.Context) {
@@ -30,6 +35,7 @@ func (h *Handler) GetOtherDetailHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    "BAD_REQUEST",
 			"message": err.Error(),
+			"data":    nil,
 		})
 		return
 	}
@@ -39,9 +45,14 @@ func (h *Handler) GetOtherDetailHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    "INTERNAL_SERVER_ERROR",
 			"message": err.Error(),
+			"data":    nil,
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": wallet})
+	c.JSON(http.StatusOK, gin.H{
+		"code":    "SUCCESS_CREATED",
+		"message": "Success get self detail",
+		"data":    wallet,
+	})
 }

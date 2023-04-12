@@ -49,6 +49,15 @@ func (r *userRepositoryImp) Register(newUser *entity.User) (*entity.Wallet, erro
 		return nil, httperror.ErrCreateUser
 	}
 
+	//New record in chance
+	newChance := &entity.Chance{
+		UserId: newUser.UserId,
+		Chance: 0,
+	}
+	if err := r.db.Create(&newChance).Error; err != nil {
+		return nil, httperror.ErrCreateUser
+	}
+
 	return newWallet, nil
 }
 

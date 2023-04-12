@@ -34,9 +34,15 @@ func (r *transactionRepoImp) GetTransaction(userId uint64, sort string, limit st
 	}
 
 	var transactions []*entity.Transaction
-	transaction := r.db.Where("source_wallet_number = ?", userWallet.WalletNumber).Or("target_wallet_number", userWallet.WalletNumber).Where("description LIKE ? ", "%"+search+"%")
+	transaction := r.db.Where("source_wallet_number = ?", userWallet.WalletNumber).Or("target_wallet_number", userWallet.WalletNumber)
+	if search != "" {
+		transaction = transaction.Where("Description ILIKE ?", "%"+search+"%")
+	}
 	if sort != " " {
 		transaction = transaction.Order(sort)
+	}
+	if sort == " " {
+		transaction = transaction.Order("created_at DESC")
 	}
 	if limit != "" {
 		limitInt, err := strconv.Atoi(limit)
@@ -44,7 +50,7 @@ func (r *transactionRepoImp) GetTransaction(userId uint64, sort string, limit st
 			return nil, httperror.ErrInvalidLimit
 		}
 		transaction = transaction.Limit(limitInt)
-	} else {
+	} else if limit == "" {
 		transaction = transaction.Limit(10)
 	}
 
@@ -68,6 +74,13 @@ func (r *transactionRepoImp) Transaction(transaction *entity.Transaction, userId
 
 			if err := tx.Model(&wallet).Where("wallet_number = ?", transaction.TargetWalletNumber).Update("balance", gorm.Expr("balance + ?", transaction.Amount)).Error; err != nil {
 				return err
+			}
+
+			if transaction.Amount == 10000000 {
+				var chance *entity.Chance
+				if err := tx.Model(&chance).Where("user_id = ?", userId).Update("chance", gorm.Expr("chance + ?", 1)).Error; err != nil {
+					return err
+				}
 			}
 		} else if transaction.SourceId == nil { //Transfer has no source of funds id but has target wallet number
 			transaction.SourceWalletNumber = &wallet.WalletNumber

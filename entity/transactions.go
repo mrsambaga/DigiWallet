@@ -11,6 +11,3 @@ type Transaction struct {
 	SourceId           *uint64
 	CreatedAt          time.Time
 }
-
-type TransactionHistory struct {
-}

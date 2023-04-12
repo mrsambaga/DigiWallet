@@ -15,6 +15,7 @@ type RouterConfig struct {
 	WalletUsecase      usecase.WalletUsecase
 	UserUsecase        usecase.UsersUsecase
 	TransactionUsecase usecase.TransactionUsecase
+	GamesUsecase       usecase.GamesUsecase
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
@@ -24,6 +25,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 		WalletUsecase:      cfg.WalletUsecase,
 		UserUsecase:        cfg.UserUsecase,
 		TransactionUsecase: cfg.TransactionUsecase,
+		GamesUsecase:       cfg.GamesUsecase,
 	})
 
 	router.GET("/profile", middleware.AuthorizeJWT, h.GetSelfDetailHandler)
@@ -31,6 +33,9 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 	router.GET("/profile/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
 	router.POST("/topup", middleware.AuthorizeJWT, h.Topup)
 	router.POST("/transfer", middleware.AuthorizeJWT, h.Transfer)
+	router.POST("/games", middleware.AuthorizeJWT, h.ProcessGames)
+	router.GET("/chance", middleware.AuthorizeJWT, h.GetChance)
+	router.GET("/leaderboard", middleware.AuthorizeJWT, h.GetLeaderboard)
 	router.POST("/register", h.Register)
 	router.POST("/login", h.Login)
 
