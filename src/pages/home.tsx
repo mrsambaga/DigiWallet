@@ -1,17 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/home/home.css';
 import useFetchGet from '../hooks/useFetchGet';
-import { decodeToken } from 'react-jwt';
 import { notifyError } from '../components/notification';
-import { ProfileResponse } from '../types/types';
+import { DropdownOption, ProfileResponse } from '../types/types';
 import Title from '../components/title';
-import { Claims } from '../types/types';
 import { GetCookie } from '../function/cookies';
 import TransactionTable from '../components/table';
 import Dropdown from '../components/dropDown';
 import Form from '../components/form';
 
+export type QueryParams = {
+  sort: string;
+  sortBy: string;
+  search: string;
+};
+
 const Home: React.FC = () => {
+  const [, setShow] = useState('');
+  const changeShow = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setShow(event.target.value);
+  };
+
+  const [sort, setSort] = useState('');
+  const changeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSort(event.target.value);
+  };
+
+  const [sortBy, setSortBy] = useState('');
+  const changeSortBy = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(event.target.value);
+  };
+
+  const [search, setSearch] = useState('');
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const query: QueryParams = {
+    sort: sort,
+    sortBy: sortBy,
+    search: search,
+  };
+
   const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
     Balance: 0,
     Email: '',
@@ -20,12 +50,7 @@ const Home: React.FC = () => {
     WalletNumber: 0,
   });
   const token = GetCookie('token');
-  const claims: Claims | null = token ? decodeToken(token!) : null;
-  const userId = claims?.id;
-  const { out, error } = useFetchGet(
-    `http://localhost:8000/users/${userId}`,
-    token,
-  );
+  const { out, error } = useFetchGet(`http://localhost:8000/profile`, token);
 
   useEffect(() => {
     if (error) {
@@ -47,19 +72,81 @@ const Home: React.FC = () => {
     }
   }, [out, error]);
 
-  const changeShow = () => {};
+  const showDropdown: DropdownOption[] = [
+    {
+      value: 'last-10-transaction',
+      content: 'Last 10 Transaction',
+    },
+    {
+      value: 'this month',
+      content: 'This Month',
+    },
+    {
+      value: 'last month',
+      content: 'Last Month',
+    },
+    {
+      value: 'this year',
+      content: 'This Year',
+    },
+    {
+      value: 'last year',
+      content: 'Last year',
+    },
+  ];
+
+  const sortByDropdown: DropdownOption[] = [
+    {
+      value: 'created_at',
+      content: 'Date',
+    },
+    {
+      value: 'amount',
+      content: 'Amount',
+    },
+  ];
+
+  const sortDropdown: DropdownOption[] = [
+    {
+      value: 'ASC',
+      content: 'Ascending',
+    },
+    {
+      value: 'DESC',
+      content: 'Descending',
+    },
+  ];
 
   return (
     <div className="home">
       <div className="home__container">
         <Title contentProps={profileResponse!} />
         <div className="home__container__sorting">
-          <Dropdown label="" onChange={changeShow} />
-          <Dropdown label="" onChange={changeShow} />
-          <Form label="" placeholder="Search" />
+          <Dropdown
+            label="Show"
+            onChange={changeShow}
+            dropdownOptions={showDropdown}
+          />
+          <div className="home__container__sorting__right">
+            <Dropdown
+              label="Sort by"
+              onChange={changeSortBy}
+              dropdownOptions={sortByDropdown}
+            />
+            <Dropdown
+              label=" "
+              onChange={changeSort}
+              dropdownOptions={sortDropdown}
+            />
+            <Form
+              label=""
+              placeholder="Search"
+              onChangeHandler={handleSearchChange}
+            />
+          </div>
         </div>
         <div className="home__container__table">
-          <TransactionTable />
+          <TransactionTable QueryParams={query} />
         </div>
       </div>
     </div>

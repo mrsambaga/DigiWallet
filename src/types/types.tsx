@@ -38,3 +38,8 @@ export type Claims = {
   iat: number;
   iss: string;
 };
+
+export type DropdownOption = {
+  content: string;
+  value: string;
+};

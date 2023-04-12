@@ -3,10 +3,10 @@ import Form from '../components/form';
 import Button from '../components/button';
 import Dropdown from '../components/dropDown';
 import useFetchPost from '../hooks/useFetchPost';
-import SuccessCard from '../components/successCard';
+import SuccessCard from '../components/modal';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
-import { TransactionResponse } from '../types/types';
+import { DropdownOption, TransactionResponse } from '../types/types';
 import { GetCookie } from '../function/cookies';
 
 type TopupForm = {
@@ -58,7 +58,7 @@ const Topup: React.FC = () => {
   };
 
   const { out, error } = useFetchPost(
-    'http://localhost:8000/users/topup',
+    'http://localhost:8000/topup',
     body,
     submit,
     () => setSubmit(false),
@@ -85,6 +85,21 @@ const Topup: React.FC = () => {
     setSuccess(false);
   };
 
+  const topupDropdown: DropdownOption[] = [
+    {
+      value: 'bank-transfer',
+      content: 'Bank Transfer',
+    },
+    {
+      value: 'credit card',
+      content: 'Credit Card',
+    },
+    {
+      value: 'cash',
+      content: 'Cash',
+    },
+  ];
+
   return (
     <div className="topup" id={success ? 'topup-active' : ''}>
       {success ? (
@@ -96,7 +111,11 @@ const Topup: React.FC = () => {
       ) : (
         <div className="topup__container">
           <h1>Top Up</h1>
-          <Dropdown label="To" onChange={handleCategoryChange} />
+          <Dropdown
+            label="To"
+            onChange={handleCategoryChange}
+            dropdownOptions={topupDropdown}
+          />
           <Form
             label="To"
             placeholder={walletNumber ? walletNumber : ''}

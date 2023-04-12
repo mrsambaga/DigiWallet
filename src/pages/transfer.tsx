@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Form from '../components/form';
 import Button from '../components/button';
 import useFetchPost from '../hooks/useFetchPost';
-import SuccessCard from '../components/successCard';
+import SuccessCard from '../components/modal';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
 import { GetCookie } from '../function/cookies';
@@ -58,7 +58,7 @@ const Transfer: React.FC = () => {
   };
 
   const { out, error } = useFetchPost(
-    'http://localhost:8000/users/transfer',
+    'http://localhost:8000/transfer',
     transferBody,
     submit,
     () => setSubmit(false),

@@ -39,7 +39,7 @@ const App: React.FC = () => {
               <Route path="/leaderboard" element={<Leaderboard />}></Route>
             </Route>
           </Route>
-          <Route path="*" element={<h1>404</h1>}></Route>
+          <Route path="*" element={<h1>404 : Page Not Found</h1>}></Route>
           <Route path="/unauthenticated" element={<Unauthenticated />}></Route>
         </Routes>
       </BrowserRouter>

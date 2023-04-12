@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles/register/register.css';
 import registerLogo from '../img/register-logo.png';
 import Form from '../components/form';
@@ -9,6 +9,8 @@ import {
   notifySuccess,
   notifyError,
 } from '../components/notification';
+import { AuthContext } from '../context/authContext';
+import { Navigate } from 'react-router-dom';
 
 type RegisterBody = {
   name: string;
@@ -21,6 +23,11 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmit, setIsSubmit] = useState(false);
+  const { authenticated } = useContext(AuthContext);
+
+  if (authenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);

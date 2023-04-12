@@ -41,24 +41,44 @@
 
             &__box {
                 display: flex;
-                flex-direction: column;
+                flex-wrap: wrap;
                 gap: 50px;
                 margin-top: 34px;
+                width: 550px;
+
+                & button {
+                    box-shadow: 0px 13px 19px rgba(0, 0, 0, 0.15);
+                    border-radius: 15px;
+                    width: 150px;
+                    height: 150px;
+                }
 
                 &__row {
                     display: flex;
                     gap: 50px;
                 }
 
-                & button {
-                    background: #FFFFFF;
-                    border: 1px solid #939393;
-                    box-shadow: 0px 13px 19px rgba(0, 0, 0, 0.15);
-                    border-radius: 15px;
-                    width: 150px;
-                    height: 150px;
-                }
             }
         }
     }
 }
+
+.box-active {
+    background: #FFFFFF;
+    border: 1px solid #939393;
+}
+
+.box-inactive {
+    background: #FFFFFF;
+    border: 1px solid #939393;
+}
+
+.box-no-chance {
+    background-color: #BDBDBD; 
+    border: 1px solid #EB5757;
+}
+
+#selectedBox {
+    background-color: #27AE60;
+}
+

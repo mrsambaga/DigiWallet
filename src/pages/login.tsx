@@ -8,6 +8,7 @@ import { NotifContainer, notifyError } from '../components/notification';
 import { AuthContext } from '../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import { SetCookie } from '../function/cookies';
+import { Navigate } from 'react-router-dom';
 
 type LoginForm = {
   email: string;
@@ -18,8 +19,12 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submit, setSubmit] = useState(false);
-  const { setAuthenticated } = useContext(AuthContext);
+  const { authenticated, setAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  if (authenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);

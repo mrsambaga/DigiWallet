@@ -3,15 +3,31 @@ import useFetchGet from '../hooks/useFetchGet';
 import { TransactionDetail } from '../types/types';
 import { GetCookie } from '../function/cookies';
 import { notifyError } from './notification';
+import queryString from 'query-string';
 import '../styles/table/table.css';
+import { QueryParams } from '../pages/home';
 
-const TransactionTable: React.FC = () => {
+type DropdownProps = {
+  QueryParams?: QueryParams;
+};
+
+const TransactionTable: React.FC<DropdownProps> = ({ QueryParams }) => {
   const [transactions, setTransactions] = useState<TransactionDetail[]>([]);
   const token = GetCookie('token');
+  const [queryParams, setQueryParams] = useState('');
   const { out, error } = useFetchGet(
-    `http://localhost:8000/users/transaction`,
+    `http://localhost:8000/profile/transaction?${queryParams}`,
     token!,
   );
+
+  useEffect(() => {
+    const queryParams = queryString.stringify({
+      search: QueryParams?.search,
+      sortBy: QueryParams?.sortBy,
+      sort: QueryParams?.sort,
+    });
+    setQueryParams(queryParams);
+  }, [QueryParams]);
 
   useEffect(() => {
     if (error) {

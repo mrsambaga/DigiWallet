@@ -3,8 +3,6 @@ import Title from '../components/title';
 import useFetchGet from '../hooks/useFetchGet';
 import { notifyError } from '../components/notification';
 import { ProfileResponse } from '../types/types';
-import { decodeToken } from 'react-jwt';
-import { Claims } from '../types/types';
 import { GetCookie } from '../function/cookies';
 import '../styles/games/games.css';
 import { NavLink } from 'react-router-dom';
@@ -18,12 +16,7 @@ const Leaderboard: React.FC = () => {
     WalletNumber: 0,
   });
   const token = GetCookie('token');
-  const claims: Claims | null = token ? decodeToken(token!) : null;
-  const userId = claims?.id;
-  const { out, error } = useFetchGet(
-    `http://localhost:8000/users/${userId}`,
-    token!,
-  );
+  const { out, error } = useFetchGet(`http://localhost:8000/profile`, token!);
 
   useEffect(() => {
     if (error) {
