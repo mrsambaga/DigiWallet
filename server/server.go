@@ -16,6 +16,7 @@ type RouterConfig struct {
 	UserUsecase        usecase.UsersUsecase
 	TransactionUsecase usecase.TransactionUsecase
 	GamesUsecase       usecase.GamesUsecase
+	ChanceUsecase      usecase.ChanceUsecase
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
@@ -26,6 +27,7 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 		UserUsecase:        cfg.UserUsecase,
 		TransactionUsecase: cfg.TransactionUsecase,
 		GamesUsecase:       cfg.GamesUsecase,
+		ChanceUsecase:      cfg.ChanceUsecase,
 	})
 
 	router.GET("/profile", middleware.AuthorizeJWT, h.GetSelfDetailHandler)

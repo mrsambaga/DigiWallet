@@ -3,23 +3,23 @@ package repository
 import (
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/httperror"
-	"errors"
 
 	"gorm.io/gorm"
 )
 
 type GamesRepository interface {
 	ProcessGames(userId uint64, boxIdx uint64) ([]*entity.Boxes, error)
-	GetChance(userId uint64) (*entity.Chance, error)
 	GetLeaderboard() []*entity.Leaderboard
 }
 
 type gamesRepoImp struct {
-	db *gorm.DB
+	db         *gorm.DB
+	chanceRepo chanceRepositoryImp
 }
 
 type GamesRConfig struct {
-	DB *gorm.DB
+	DB         *gorm.DB
+	ChanceRepo ChanceRConfig
 }
 
 func NewGamesRepository(cfg *GamesRConfig) GamesRepository {
@@ -33,17 +33,10 @@ func (r *gamesRepoImp) ProcessGames(userId uint64, boxIdx uint64) ([]*entity.Box
 	r.db.Find(&Boxes)
 
 	if err := r.db.Transaction(func(tx *gorm.DB) error {
-		// Check chance
-		var chance *entity.Chance
-		if err := tx.Model(&chance).Where("user_id = ?", userId).First(&chance).Error; err != nil {
-			return err
-		}
-		if chance.Chance == 0 {
-			return errors.New("no chance")
-		}
 
 		//Subtract chance
-		if err := tx.Model(&chance).Where("user_id = ?", userId).Update("chance", gorm.Expr("chance - ?", 1)).Error; err != nil {
+		err := r.chanceRepo.SubtractChance(tx, userId)
+		if err != nil {
 			return err
 		}
 
@@ -103,16 +96,6 @@ func (r *gamesRepoImp) ProcessGames(userId uint64, boxIdx uint64) ([]*entity.Box
 		return nil, err
 	}
 	return Boxes, nil
-}
-
-func (r *gamesRepoImp) GetChance(userId uint64) (*entity.Chance, error) {
-	var chance *entity.Chance
-	err := r.db.Where("user_id = ?", userId).First(&chance).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return chance, nil
 }
 
 func (r *gamesRepoImp) GetLeaderboard() []*entity.Leaderboard {

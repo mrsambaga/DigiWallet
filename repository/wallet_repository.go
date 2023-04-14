@@ -63,3 +63,5 @@ func (r *walletRepositoryImp) hideName(name string) string {
 	joinedName := strings.Join(names, "")
 	return joinedName[:len(joinedName)-1]
 }
+
+

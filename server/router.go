@@ -31,8 +31,15 @@ func createRouter() *gin.Engine {
 	gamesRepo := repository.NewGamesRepository(&repository.GamesRConfig{
 		DB: db.Get(),
 	})
+	chanceRepo := repository.NewChanceRepository(&repository.ChanceRConfig{
+		DB: db.Get(),
+	})
 	gamesUsecase := usecase.NewGamesUsecase(&usecase.GamesUConfig{
-		GamesRepository: gamesRepo,
+		GamesRepository:  gamesRepo,
+		ChanceRepository: chanceRepo,
+	})
+	chanceUsecase := usecase.NewChanceUsecase(&usecase.ChanceUConfig{
+		ChanceRepository: chanceRepo,
 	})
 
 	return NewRouter(&RouterConfig{
@@ -40,6 +47,7 @@ func createRouter() *gin.Engine {
 		UserUsecase:        userUsecase,
 		TransactionUsecase: transactionUsecase,
 		GamesUsecase:       gamesUsecase,
+		ChanceUsecase:      chanceUsecase,
 	})
 }
 

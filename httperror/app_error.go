@@ -21,4 +21,5 @@ var (
 	ErrInvalidTransfer        = errors.New("invalid transfer")
 	ErrWalletNotFound         = errors.New("wallet not found")
 	ErrInvalidLimit           = errors.New("invalid limit")
+	ErrNoChance               = errors.New("no chance")
 )

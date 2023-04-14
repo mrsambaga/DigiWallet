@@ -40,7 +40,7 @@ func (h *Handler) ProcessGames(c *gin.Context) {
 func (h *Handler) GetChance(c *gin.Context) {
 	userId := c.GetInt("id")
 
-	chance, err := h.gamesUsecase.GetChance(uint64(userId))
+	chance, err := h.chanceUsecase.GetChance(uint64(userId))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    "INTERNAL_SERVER_ERROR",
