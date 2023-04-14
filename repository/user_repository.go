@@ -3,14 +3,15 @@ package repository
 import (
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/httperror"
-	"assignment-golang-backend/util"
+	"strings"
 
 	"gorm.io/gorm"
 )
 
 type UsersRepository interface {
-	Register(newUser *entity.User) (*entity.Wallet, error)
-	Login(loginUser *entity.User) (string, error)
+	CreateUser(newUser *entity.User) error
+	GetUserByEmail(email string) (*entity.User, error)
+	CreateNewWallet(user *entity.User) (*entity.Wallet, error)
 }
 
 type userRepositoryImp struct {
@@ -27,26 +28,21 @@ func NewUserRepository(cfg *UserRConfig) UsersRepository {
 	}
 }
 
-func (r *userRepositoryImp) Register(newUser *entity.User) (*entity.Wallet, error) {
-	var user entity.User
-
-	if err := r.db.Where("email = ?", newUser.Email).First(&user).Error; err == nil {
-		return nil, httperror.ErrEmailAlreadyRegistered
+func (r *userRepositoryImp) GetUserByEmail(email string) (*entity.User, error) {
+	user := &entity.User{}
+	if err := r.db.Where("email = ?", email).First(user).Error; err != nil {
+		return nil, httperror.ErrInvalidEmailPassword
 	}
+	return user, nil
+}
 
-	hashedPassword, err := util.HashPassword(newUser.Password)
-	if err != nil {
-		return nil, err
-	}
-	newUser.Password = hashedPassword
+func (r *userRepositoryImp) CreateUser(newUser *entity.User) error {
+	if err := r.db.Create(newUser).Error; err != nil {
+		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
+			return httperror.ErrEmailAlreadyRegistered
+		}
 
-	if err := r.db.Create(&newUser).Error; err != nil {
-		return nil, httperror.ErrCreateUser
-	}
-
-	newWallet := r.NewWallet(newUser)
-	if err := r.db.Create(&newWallet).Error; err != nil {
-		return nil, httperror.ErrCreateUser
+		return httperror.ErrCreateUser
 	}
 
 	//New record in chance
@@ -55,47 +51,22 @@ func (r *userRepositoryImp) Register(newUser *entity.User) (*entity.Wallet, erro
 		Chance: 0,
 	}
 	if err := r.db.Create(&newChance).Error; err != nil {
+		return httperror.ErrCreateUser
+	}
+
+	return nil
+}
+
+func (r *userRepositoryImp) CreateNewWallet(user *entity.User) (*entity.Wallet, error) {
+	newWallet := &entity.Wallet{
+		UserId:  user.UserId,
+		Balance: 0,
+		User:    *user,
+	}
+
+	if err := r.db.Create(newWallet).Error; err != nil {
 		return nil, httperror.ErrCreateUser
 	}
 
 	return newWallet, nil
-}
-
-func (r *userRepositoryImp) NewWallet(user *entity.User) *entity.Wallet {
-	var lastWallet *entity.Wallet
-	var walletNumber uint64
-
-	if err := r.db.Order("wallet_number desc").First(&lastWallet).Error; err != nil {
-		walletNumber = 1230000000001
-	} else {
-		walletNumber = lastWallet.WalletNumber + 1
-	}
-
-	return &entity.Wallet{
-		UserId:       user.UserId,
-		WalletNumber: walletNumber,
-		Balance:      0,
-		User:         *user,
-	}
-}
-
-func (r *userRepositoryImp) Login(loginUser *entity.User) (string, error) {
-	var user *entity.User
-
-	if err := r.db.Where("email = ?", loginUser.Email).First(&user).Error; err != nil {
-		return "", httperror.ErrInvalidEmailPassword
-	}
-
-	ok := util.ComparePassword(user.Password, loginUser.Password)
-	if !ok {
-		return "", httperror.ErrInvalidEmailPassword
-	}
-
-	loginUser.UserId = user.UserId
-	tokenString, err := util.GenerateAccessToken(loginUser)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString.Token, nil
 }

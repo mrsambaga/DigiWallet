@@ -5,12 +5,13 @@ import (
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/httperror"
 	"assignment-golang-backend/repository"
-	"regexp"
+	"assignment-golang-backend/util"
+	"net/mail"
 )
 
 type UsersUsecase interface {
 	Register(newUserDTO *dto.RegisterRequestDTO) (*dto.RegisterResponseDTO, error)
-	Login(loginUserDTO *dto.LoginRequestDTO) (string, error)
+	Login(loginUserDTO *dto.LoginRequestDTO) (*dto.TokenResponse, error)
 }
 
 type usersUsecaseImp struct {
@@ -34,12 +35,23 @@ func (u *usersUsecaseImp) Register(newUserDTO *dto.RegisterRequestDTO) (*dto.Reg
 		Password: newUserDTO.Password,
 	}
 
-	validEmail := checkValidEmail(newUser.Email)
-	if !validEmail {
+	isValid := checkValidEmail(newUser.Email)
+	if !isValid {
 		return nil, httperror.ErrInvalidRegisterEmail
 	}
 
-	newWallet, err := u.usersRepository.Register(newUser)
+	hashedPassword, err := util.HashPassword(newUser.Password)
+	if err != nil {
+		return nil, err
+	}
+	newUser.Password = hashedPassword
+
+	err = u.usersRepository.CreateUser(newUser)
+	if err != nil {
+		return nil, err
+	}
+
+	newWallet, err := u.usersRepository.CreateNewWallet(newUser)
 	if err != nil {
 		return nil, err
 	}
@@ -56,21 +68,31 @@ func (u *usersUsecaseImp) Register(newUserDTO *dto.RegisterRequestDTO) (*dto.Reg
 }
 
 func checkValidEmail(email string) bool {
-	pattern := `^[a-zA-Z0-9]+@gmail\.com$`
-	valid, _ := regexp.MatchString(pattern, email)
-	return valid
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
-func (u *usersUsecaseImp) Login(loginUserDTO *dto.LoginRequestDTO) (string, error) {
+func (u *usersUsecaseImp) Login(loginUserDTO *dto.LoginRequestDTO) (*dto.TokenResponse, error) {
 	loginUser := &entity.User{
 		Email:    loginUserDTO.Email,
 		Password: loginUserDTO.Password,
 	}
 
-	tokenString, err := u.usersRepository.Login(loginUser)
+	registeredUser, err := u.usersRepository.GetUserByEmail(loginUser.Email)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return tokenString, nil
+	ok := util.ComparePassword(registeredUser.Password, loginUser.Password)
+	if !ok {
+		return nil, httperror.ErrInvalidEmailPassword
+	}
+
+	loginUser.UserId = registeredUser.UserId
+	token, err := util.GenerateAccessToken(loginUser)
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
 }

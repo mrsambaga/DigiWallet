@@ -16,7 +16,7 @@ func GenerateAccessToken(user *entity.User) (*dto.TokenResponse, error) {
 	claims := jwt.MapClaims{
 		"id":    user.UserId,
 		"email": user.Email,
-		"iss":   "Wallet",
+		"iss":   "localhost:8000/",
 		"iat":   time.Now().Unix(),
 		"exp":   time.Now().Add(time.Hour * 2).Unix(),
 	}

@@ -47,7 +47,7 @@ func (h *Handler) Register(c *gin.Context) {
 		} else if errors.Is(err, httperror.ErrInvalidRegisterEmail) {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"error":   "BAD_REQUEST",
-				"message": "Invalid email, please enter this format : 'xxx@gmail.com'",
+				"message": "Invalid email, please enter this format : 'xxx@xxx.com'",
 				"data":    nil,
 			})
 			return
