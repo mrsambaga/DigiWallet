@@ -10,7 +10,7 @@ var (
 	ErrCreateUser             = errors.New("failed to create user")
 	ErrInvalidEmailPassword   = errors.New("invalid email or password")
 	ErrUserNotExist           = errors.New("user not exist")
-	ErrFailedCreateToken      = errors.New("failed to creae token")
+	ErrFailedCreateToken      = errors.New("failed to creat token")
 	ErrInvalidRegisterEmail   = errors.New("invalid email")
 	ErrSourceOfFundsNotExist  = errors.New("source of funds not exist")
 	ErrInvalidTopupAmount     = errors.New("invalid topup amount")

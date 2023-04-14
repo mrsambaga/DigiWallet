@@ -1,27 +1,44 @@
 package db
 
 import (
+	"assignment-golang-backend/config"
+	"fmt"
+	"log"
+	"os"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-var db *gorm.DB
-var err error
+var (
+	c  = config.DBConfig
+	db *gorm.DB
+)
 
-func ConnectDB() error {
-	dsn := "host=localhost user=radjasa.dzar password=radjasa.dzar dbname=wallet_starter_db port=5432 sslmode=disable"
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return err
-	}
-
-	return nil
+func getLogger() logger.Interface {
+	return logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			LogLevel: logger.Info,
+		},
+	)
 }
 
-func GetDB() *gorm.DB {
+func Connect() (err error) {
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=Asia/Jakarta",
+		c.Host,
+		c.User,
+		c.Password,
+		c.DBName,
+		c.Port,
+	)
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: getLogger(),
+	})
+	return
+}
+
+func Get() *gorm.DB {
 	return db
-}
-
-func GetError() error {
-	return err
 }

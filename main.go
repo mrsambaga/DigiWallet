@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	err := db.ConnectDB()
+	err := db.Connect()
 	if err != nil {
 		log.Println("Failed to connect DB", err)
 		return

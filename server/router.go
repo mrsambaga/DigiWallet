@@ -11,25 +11,25 @@ import (
 
 func createRouter() *gin.Engine {
 	walletRepo := repository.NewWalletRepository(&repository.WalletRConfig{
-		DB: db.GetDB(),
+		DB: db.Get(),
 	})
 	walletUsecase := usecase.NewWalletUsecase(&usecase.WalletUConfig{
 		WalletRepository: walletRepo,
 	})
 	userRepo := repository.NewUserRepository(&repository.UserRConfig{
-		DB: db.GetDB(),
+		DB: db.Get(),
 	})
 	userUsecase := usecase.NewUsersUsecase(&usecase.UsersUsecaseConfig{
 		UsersRepository: userRepo,
 	})
 	transactionRepo := repository.NewTransactionRepository(&repository.TransactionRConfig{
-		DB: db.GetDB(),
+		DB: db.Get(),
 	})
 	transactionUsecase := usecase.NewTransactionUsecase(&usecase.TransactionUConfig{
 		TransactionRepository: transactionRepo,
 	})
 	gamesRepo := repository.NewGamesRepository(&repository.GamesRConfig{
-		DB: db.GetDB(),
+		DB: db.Get(),
 	})
 	gamesUsecase := usecase.NewGamesUsecase(&usecase.GamesUConfig{
 		GamesRepository: gamesRepo,
