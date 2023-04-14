@@ -1,12 +1,13 @@
 package usecase
 
 import (
+	"assignment-golang-backend/dto"
 	"assignment-golang-backend/entity"
 	"assignment-golang-backend/repository"
 )
 
 type GamesUsecase interface {
-	ProcessGames(userId uint64, box *entity.Boxes) ([]*entity.Boxes, error)
+	ProcessGames(userId uint64, boxDTO *dto.BoxRequestDTO) ([]*entity.Boxes, error)
 	GetChance(userId uint64) (*entity.Chance, error)
 	GetLeaderboard() []*entity.Leaderboard
 }
@@ -25,8 +26,9 @@ func NewGamesUsecase(cfg *GamesUConfig) GamesUsecase {
 	}
 }
 
-func (u *gamesUImp) ProcessGames(userId uint64, box *entity.Boxes) ([]*entity.Boxes, error) {
-	boxes, err := u.gamesRepository.ProcessGames(userId, box.BoxId)
+func (u *gamesUImp) ProcessGames(userId uint64, boxDTO *dto.BoxRequestDTO) ([]*entity.Boxes, error) {
+	
+	boxes, err := u.gamesRepository.ProcessGames(userId, boxDTO.BoxId)
 	if err != nil {
 		return nil, err
 	}

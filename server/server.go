@@ -19,7 +19,7 @@ type RouterConfig struct {
 }
 
 func NewRouter(cfg *RouterConfig) *gin.Engine {
-	router := gin.New()
+	router := gin.Default()
 
 	h := handler.New(&handler.Config{
 		WalletUsecase:      cfg.WalletUsecase,

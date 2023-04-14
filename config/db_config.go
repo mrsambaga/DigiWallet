@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 )
 
@@ -15,7 +14,6 @@ type dbConfig struct {
 
 func getENV(key, defaultVal string) string {
 	env := os.Getenv(key)
-	fmt.Println("INI ENV NYA", env)
 	if env == "" {
 		return defaultVal
 	}

@@ -1,17 +1,17 @@
 package handler
 
 import (
-	"assignment-golang-backend/entity"
+	"assignment-golang-backend/dto"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) ProcessGames(c *gin.Context) {
-	var box *entity.Boxes
+	var boxDTO dto.BoxRequestDTO
 	userId := c.GetInt("id")
 
-	if err := c.ShouldBindJSON(&box); err != nil {
+	if err := c.ShouldBindJSON(&boxDTO); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"code":    "BAD_REQUEST",
 			"message": err.Error(),
@@ -20,7 +20,7 @@ func (h *Handler) ProcessGames(c *gin.Context) {
 		return
 	}
 
-	boxes, err := h.gamesUsecase.ProcessGames(uint64(userId), box)
+	boxes, err := h.gamesUsecase.ProcessGames(uint64(userId), &boxDTO)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"code":    "BAD_REQUEST",
