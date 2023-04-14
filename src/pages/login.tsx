@@ -56,7 +56,7 @@ const Login: React.FC = () => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
     } else if (out != null) {
-      SetCookie('token', out.data, 1);
+      SetCookie('token', out.data.token, 1);
       setAuthenticated(true);
       navigate(`/`);
     }

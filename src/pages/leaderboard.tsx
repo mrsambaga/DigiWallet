@@ -23,7 +23,8 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     if (outError) {
-      notifyError(outError.response?.data?.message || outError.message);
+      const errorMessage = outError.response?.data || outError.message;
+      notifyError(JSON.stringify(errorMessage));
       return;
     }
 
@@ -49,9 +50,9 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     if (errorLeaderboard) {
-      notifyError(
-        errorLeaderboard.response?.data?.message || errorLeaderboard.message,
-      );
+      const errorMessage =
+        errorLeaderboard.response?.data || errorLeaderboard.message;
+      notifyError(JSON.stringify(errorMessage));
       return;
     }
 

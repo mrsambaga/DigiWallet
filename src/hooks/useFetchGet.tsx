@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export type FetchData = {
   out: any;
   loading: boolean;
-  error: any;
+  error: AxiosError | null;
 };
 
 const useFetchGet = (
@@ -14,7 +14,7 @@ const useFetchGet = (
 ): FetchData => {
   const [out, setOut] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any | null>(null);
+  const [error, setError] = useState<AxiosError | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -25,7 +25,8 @@ const useFetchGet = (
         const response = await axios.get(url, config);
         setOut(response?.data);
       } catch (error) {
-        setError(error);
+        const err = error as AxiosError | null;
+        setError(err);
       } finally {
         setLoading(false);
       }

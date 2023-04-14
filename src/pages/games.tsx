@@ -45,7 +45,8 @@ const Games: React.FC = () => {
 
   useEffect(() => {
     if (gamesErr != null) {
-      notifyError(gamesErr.response?.data?.message || gamesErr.message);
+      const errorMessage = gamesErr.response?.data || gamesErr.message;
+      notifyError(JSON.stringify(errorMessage));
     } else if (gamesOut != null) {
       console.log(gamesOut.data);
       console.log('SHUFFLE', shuffledArr);
@@ -73,7 +74,8 @@ const Games: React.FC = () => {
 
   useEffect(() => {
     if (profileErr) {
-      notifyError(profileErr.response?.data?.message || profileErr.message);
+      const errorMessage = profileErr.response?.data || profileErr.message;
+      notifyError(JSON.stringify(errorMessage));
       return;
     }
 
@@ -102,7 +104,8 @@ const Games: React.FC = () => {
 
   useEffect(() => {
     if (chanceErr) {
-      notifyError(chanceErr.response?.data?.message || chanceErr.message);
+      const errorMessage = chanceErr.response?.data || chanceErr.message;
+      notifyError(JSON.stringify(errorMessage));
       return;
     }
 

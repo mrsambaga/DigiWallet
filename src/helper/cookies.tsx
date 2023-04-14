@@ -23,23 +23,3 @@ export const GetCookie = (cname: string): string => {
   }
   return '';
 };
-
-// export const RefreshCookie = (cname: string): void => {
-//   const cookie = GetCookie(cname);
-//   if (cookie) {
-//     SetCookie("")
-//   }
-// };
-
-export const CheckCookie = (): void => {
-  let user = GetCookie('username');
-  if (user != '') {
-    alert('Welcome again ' + user);
-  } else {
-    const userPrompted = prompt('Please enter your name:', '')!;
-    if (userPrompted != '' && userPrompted != null) {
-      user = userPrompted;
-      SetCookie('username', user, 365);
-    }
-  }
-};

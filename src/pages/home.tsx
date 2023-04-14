@@ -54,7 +54,8 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      notifyError(error.response?.data?.message || error.message);
+      const errorMessage = error.response?.data || error.message;
+      notifyError(JSON.stringify(errorMessage));
       return;
     }
 
