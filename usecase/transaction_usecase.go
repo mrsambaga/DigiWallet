@@ -15,15 +15,18 @@ type TransactionUsecase interface {
 
 type transactionUImp struct {
 	transactionRepository repository.TransactionRepository
+	walletRepository      repository.WalletRepository
 }
 
 type TransactionUConfig struct {
 	TransactionRepository repository.TransactionRepository
+	WalletRepository      repository.WalletRepository
 }
 
 func NewTransactionUsecase(cfg *TransactionUConfig) TransactionUsecase {
 	return &transactionUImp{
 		transactionRepository: cfg.TransactionRepository,
+		walletRepository:      cfg.WalletRepository,
 	}
 }
 
@@ -47,6 +50,14 @@ func (u *transactionUImp) Transfer(newTransfer *dto.TransferRequestDTO, userId u
 		TargetWalletNumber: newTransfer.TargetWalletNumber,
 		Amount:             newTransfer.Amount,
 		Description:        newTransfer.Description,
+	}
+
+	wallet, err := u.walletRepository.GetSelfDetail(int(userId))
+	if err != nil {
+		return nil, err
+	}
+	if wallet.Balance < transfer.Amount {
+		return nil, httperror.ErrInsufficientBalance
 	}
 
 	out, err := u.transactionRepository.Transaction(transfer, userId)

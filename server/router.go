@@ -27,6 +27,7 @@ func createRouter() *gin.Engine {
 	})
 	transactionUsecase := usecase.NewTransactionUsecase(&usecase.TransactionUConfig{
 		TransactionRepository: transactionRepo,
+		WalletRepository:      walletRepo,
 	})
 	gamesRepo := repository.NewGamesRepository(&repository.GamesRConfig{
 		DB: db.Get(),
