@@ -29,7 +29,7 @@ func (err AppError) Error() string {
 
 func validateToken(encodedToken string) (*jwt.Token, error) {
 	return jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("SECRET-KEY")), nil
+		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 }
 

@@ -22,7 +22,7 @@ func GenerateAccessToken(user *entity.User) (*dto.TokenResponse, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	hMacSecret := []byte(os.Getenv("SECRET-KEY"))
+	hMacSecret := []byte(os.Getenv("SECRET_KEY"))
 	tokenString, err := token.SignedString(hMacSecret)
 	if err != nil {
 		return nil, httperror.ErrFailedCreateToken

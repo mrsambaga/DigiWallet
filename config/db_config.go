@@ -1,7 +1,11 @@
 package config
 
 import (
+	"fmt"
+	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type dbConfig struct {
@@ -13,7 +17,13 @@ type dbConfig struct {
 }
 
 func getENV(key, defaultVal string) string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("err loading: %v", err)
+	}
+
 	env := os.Getenv(key)
+	fmt.Println(env)
 	if env == "" {
 		return defaultVal
 	}
@@ -24,10 +34,10 @@ var (
 	ENV      = getENV("ENV", "testing") // testing as default to skip auth middleware during unit test
 	AppName  = "sea-labs-library"
 	DBConfig = dbConfig{
-		Host:     getENV("HOST", "localhost"),
-		User:     getENV("DB_USER", "radjasa.dzar"),
-		Password: getENV("DB_PASS", "radjasa.dzar"),
-		DBName:   getENV("DB_NAME", "wallet_starter_db"),
-		Port:     getENV("DB_PORT", "5432"),
+		Host:     getENV("HOST", ""),
+		User:     getENV("DB_USER", ""),
+		Password: getENV("DB_PASS", ""),
+		DBName:   getENV("DB_NAME", ""),
+		Port:     getENV("PORT", ""),
 	}
 )
