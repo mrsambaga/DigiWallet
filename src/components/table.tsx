@@ -6,6 +6,7 @@ import { notifyError } from './notification';
 import queryString from 'query-string';
 import '../styles/table/table.css';
 import { QueryParams } from '../pages/home';
+import moment from 'moment';
 
 type DropdownProps = {
   QueryParams?: QueryParams;
@@ -44,6 +45,9 @@ const TransactionTable: React.FC<DropdownProps> = ({ QueryParams }) => {
         (item: any) => {
           const selfWallet: string | null =
             localStorage.getItem('wallet_number');
+          const dateTime = moment(item.CreatedAt).format(
+            'HH:mm - DD MMMM YYYY',
+          );
           return {
             TransactionId: item.TransactionId,
             Amount: item.Amount,
@@ -53,7 +57,7 @@ const TransactionTable: React.FC<DropdownProps> = ({ QueryParams }) => {
               item.SourceId || item.TargetWalletNumber == selfWallet
                 ? 'Credit'
                 : 'Debit',
-            DateTime: item.CreatedAt,
+            DateTime: dateTime,
           };
         },
       );
