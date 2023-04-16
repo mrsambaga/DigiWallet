@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
-const useFetchPost = <T,>(
+const useFetchPost = <T>(
   url: string,
   body: T,
   submit: boolean,

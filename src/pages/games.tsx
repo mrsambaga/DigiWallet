@@ -11,7 +11,6 @@ import { shuffle } from '../helper/shuffle';
 
 const Games: React.FC = () => {
   const token = GetCookie('token');
-
   const arrayNum: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const [shuffledArr, setShuffledArr] = useState(shuffle(arrayNum));
   const [prize, setPrize] = useState(shuffledArr);
