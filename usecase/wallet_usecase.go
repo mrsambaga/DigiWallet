@@ -31,7 +31,6 @@ func (u *walletUsecaseImp) GetSelfDetail(userId int) (*dto.WalletDetailDTO, erro
 	}
 
 	out := &dto.WalletDetailDTO{}
-	out.Id = detail.User.UserId
 	out.UserId = detail.UserId
 	out.UserName = detail.User.Name
 	out.Email = detail.User.Email

@@ -29,7 +29,7 @@ func NewWalletRepository(cfg *WalletRConfig) WalletRepository {
 
 func (r *walletRepositoryImp) GetSelfDetail(userId int) (*entity.Wallet, error) {
 	var wallet *entity.Wallet
-	err := r.db.Where("user_id = ?", userId).Preload("User").Find(&wallet).Error
+	err := r.db.Joins("User").Where("wallets.user_id = ?", userId).First(&wallet).Error
 	if err != nil {
 		return nil, httperror.ErrUserNotExist
 	}
@@ -39,7 +39,7 @@ func (r *walletRepositoryImp) GetSelfDetail(userId int) (*entity.Wallet, error) 
 
 func (r *walletRepositoryImp) GetOtherUserDetail(userId int) (*entity.Wallet, error) {
 	var wallet *entity.Wallet
-	err := r.db.Where("user_id = ?", userId).Preload("User").Find(&wallet).Error
+	err := r.db.Joins("User").Where("wallets.user_id = ?", userId).First(&wallet).Error
 	if err != nil {
 		return nil, httperror.ErrUserNotExist
 	}
@@ -63,5 +63,3 @@ func (r *walletRepositoryImp) hideName(name string) string {
 	joinedName := strings.Join(names, "")
 	return joinedName[:len(joinedName)-1]
 }
-
-
