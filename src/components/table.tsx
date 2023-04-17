@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useFetchGet from '../hooks/useFetchGet';
-import { TransactionDetail } from '../types/types';
+import { TransactionDetail, TransferResponse } from '../types/types';
 import { GetCookie } from '../helper/cookies';
 import { notifyError } from './notification';
 import queryString from 'query-string';
@@ -17,7 +17,7 @@ const TransactionTable: React.FC<DropdownProps> = ({ QueryParams }) => {
   const token = GetCookie('token');
   const [queryParams, setQueryParams] = useState('');
   const [paramChange, setParamChange] = useState(false);
-  const { out, loading, error } = useFetchGet(
+  const { out, loading, error } = useFetchGet<{ data: TransferResponse[] }>(
     `http://localhost:8000/profile/transaction?${queryParams}`,
     token!,
     paramChange,
@@ -40,27 +40,23 @@ const TransactionTable: React.FC<DropdownProps> = ({ QueryParams }) => {
       return;
     }
 
-    if (out != null) {
-      const transactionDetail: TransactionDetail[] = out.data.map(
-        (item: any) => {
-          const selfWallet: string | null =
-            localStorage.getItem('wallet_number');
-          const dateTime = moment(item.CreatedAt).format(
-            'HH:mm - DD MMMM YYYY',
-          );
-          return {
-            TransactionId: item.TransactionId,
-            Amount: item.Amount,
-            Description: item.Description ? item.Description : '',
-            FromTo: item.SourceId ? item.SourceId : item.TargetWalletNumber,
-            Type:
-              item.SourceId || item.TargetWalletNumber == selfWallet
-                ? 'Credit'
-                : 'Debit',
-            DateTime: dateTime,
-          };
-        },
-      );
+    if (out != null && out.data != null) {
+      console.log(out);
+      const transactionDetail: TransactionDetail[] = out.data.map((item) => {
+        const selfWallet: string | null = localStorage.getItem('wallet_number');
+        const dateTime = moment(item.CreatedAt).format('HH:mm - DD MMMM YYYY');
+        return {
+          TransactionId: item.TransactionId,
+          Amount: item.Amount,
+          Description: item.Description ? item.Description : '',
+          FromTo: item.SourceId ? item.SourceId : item.TargetWalletNumber,
+          Type:
+            item.SourceId || item.TargetWalletNumber == selfWallet
+              ? 'Credit'
+              : 'Debit',
+          DateTime: dateTime,
+        };
+      });
 
       setTransactions(transactionDetail);
     }

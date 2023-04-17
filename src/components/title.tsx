@@ -1,10 +1,10 @@
-import { ProfileResponse } from '../types/types';
+import { Profile } from '../types/types';
 import React, { useState, useEffect } from 'react';
 import '../styles/home/home.css';
 
 type TitleProps = {
   idName?: string;
-  contentProps: ProfileResponse;
+  contentProps: Profile;
 };
 
 export const formatRupiah = (angka: string): string => {

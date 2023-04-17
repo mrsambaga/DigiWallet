@@ -2,24 +2,23 @@ import React, { useEffect, useState } from 'react';
 import Title from '../components/title';
 import useFetchGet from '../hooks/useFetchGet';
 import { notifyError } from '../components/notification';
-import { LeaderboardResp, ProfileResponse } from '../types/types';
+import { LeaderboardResp, Profile, ProfileResponse } from '../types/types';
 import { GetCookie } from '../helper/cookies';
 import '../styles/games/games.css';
 import { NavLink } from 'react-router-dom';
 
 const Leaderboard: React.FC = () => {
-  const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
+  const [profileResponse, setProfileResponse] = useState<Profile>({
     Balance: 0,
     Email: '',
     UserId: 0,
     UserName: '',
-    WalletNumber: 0,
+    WalletNumber: '',
   });
   const token = GetCookie('token');
-  const { out: outProfile, error: outError } = useFetchGet(
-    `http://localhost:8000/profile`,
-    token!,
-  );
+  const { out: outProfile, error: outError } = useFetchGet<{
+    data: ProfileResponse;
+  }>(`http://localhost:8000/profile`, token!);
 
   useEffect(() => {
     if (outError) {
@@ -28,8 +27,8 @@ const Leaderboard: React.FC = () => {
       return;
     }
 
-    if (outProfile != null) {
-      const profileResponse: ProfileResponse = {
+    if (outProfile != null && outProfile.data != null) {
+      const profileResponse: Profile = {
         Balance: outProfile.data.balance,
         Email: outProfile.data.email,
         UserId: outProfile.data.user_id,
@@ -43,10 +42,9 @@ const Leaderboard: React.FC = () => {
   }, [outProfile, outError]);
 
   const [leaderboard, setLeaderBoard] = useState<LeaderboardResp[]>([]);
-  const { out: outLeaderboard, error: errorLeaderboard } = useFetchGet(
-    `http://localhost:8000/leaderboard`,
-    token!,
-  );
+  const { out: outLeaderboard, error: errorLeaderboard } = useFetchGet<{
+    data: LeaderboardResp[];
+  }>(`http://localhost:8000/leaderboard`, token!);
 
   useEffect(() => {
     if (errorLeaderboard) {
@@ -56,7 +54,7 @@ const Leaderboard: React.FC = () => {
       return;
     }
 
-    if (outLeaderboard != null) {
+    if (outLeaderboard != null && outLeaderboard.data != null) {
       setLeaderBoard(outLeaderboard.data);
     }
   }, [outLeaderboard, errorLeaderboard]);

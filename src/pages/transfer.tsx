@@ -6,7 +6,7 @@ import SuccessCard from '../components/modal';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
 import { GetCookie } from '../helper/cookies';
-import { TransferResponse } from '../types/types';
+import { Transaction } from '../types/types';
 
 type TransferForm = {
   amount: number | string;
@@ -22,7 +22,7 @@ const Transfer: React.FC = () => {
   const [amount, setAmount] = useState('');
   const [submit, setSubmit] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [transferResponse, setTransferResponse] = useState<TransferResponse>({
+  const [transferResponse, setTransferResponse] = useState<Transaction>({
     Amount: 0,
     TransactionId: 0,
     From: 0,
@@ -69,7 +69,7 @@ const Transfer: React.FC = () => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
     } else if (out != null) {
-      const transferResponse: TransferResponse = {
+      const transferResponse: Transaction = {
         Amount: out.data.amount,
         TransactionId: out.data.transaction_id,
         From: Number(walletNumber),

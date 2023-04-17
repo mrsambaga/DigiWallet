@@ -1,9 +1,18 @@
-export type TransactionResponse = {
+export type Transaction = {
   Amount: number;
   TransactionId: number;
   From: number;
   To: number;
   Description: string;
+};
+
+export type TransferResponse = {
+  TransactionId: number;
+  Amount: string;
+  Description: string;
+  SourceId: string;
+  TargetWalletNumber: string;
+  CreatedAt: number;
 };
 
 export type TransactionDetail = {
@@ -16,19 +25,19 @@ export type TransactionDetail = {
 };
 
 export type ProfileResponse = {
+  balance: number;
+  email: string;
+  user_id: number;
+  user_name: string;
+  wallet_number: string;
+};
+
+export type Profile = {
   Balance: number;
   Email: string;
   UserId: number;
   UserName: string;
-  WalletNumber: number;
-};
-
-export type TransferResponse = {
-  Amount: number;
-  TransactionId: number;
-  From: number;
-  To: number;
-  Description: string;
+  WalletNumber: string;
 };
 
 export type Claims = {

@@ -1,12 +1,12 @@
 import React from 'react';
 import '../styles/successCard/successCard.css';
 import successLogo from '../img/icon-success.png';
-import { TransactionResponse } from '../types/types';
+import { Transaction } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 
 type CardProps = {
   toggleSuccess: (success: boolean) => void;
-  contentProps: TransactionResponse;
+  contentProps: Transaction;
   label: string;
 };
 

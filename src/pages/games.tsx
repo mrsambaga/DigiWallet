@@ -3,7 +3,7 @@ import Title from '../components/title';
 import useFetchGet from '../hooks/useFetchGet';
 import useFetchPost from '../hooks/useFetchPost';
 import { notifyError } from '../components/notification';
-import { ProfileResponse } from '../types/types';
+import { Profile, ProfileResponse } from '../types/types';
 import { GetCookie } from '../helper/cookies';
 import '../styles/games/games.css';
 import { NavLink } from 'react-router-dom';
@@ -58,18 +58,16 @@ const Games: React.FC = () => {
     }
   }, [gamesOut, gamesErr]);
 
-  const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
+  const [profileResponse, setProfileResponse] = useState<Profile>({
     Balance: 0,
     Email: '',
     UserId: 0,
     UserName: '',
-    WalletNumber: 0,
+    WalletNumber: '',
   });
-  const { out: profileOut, error: profileErr } = useFetchGet(
-    `http://localhost:8000/profile`,
-    token!,
-    submit,
-  );
+  const { out: profileOut, error: profileErr } = useFetchGet<{
+    data: ProfileResponse;
+  }>(`http://localhost:8000/profile`, token!, submit);
 
   useEffect(() => {
     if (profileErr) {
@@ -78,8 +76,8 @@ const Games: React.FC = () => {
       return;
     }
 
-    if (profileOut != null) {
-      const profileResponse: ProfileResponse = {
+    if (profileOut != null && profileOut.data != null) {
+      const profileResponse: Profile = {
         Balance: profileOut.data.balance,
         Email: profileOut.data.email,
         UserId: profileOut.data.user_id,
@@ -94,12 +92,15 @@ const Games: React.FC = () => {
     console.log('INI EKSEKUSI');
   }, [profileOut, profileErr]);
 
+  type ChanceResponse = {
+    id: number;
+    Chance: number;
+  };
+
   const [chance, setChance] = useState(0);
-  const { out: chanceOut, error: chanceErr } = useFetchGet(
-    `http://localhost:8000/chance`,
-    token!,
-    submit,
-  );
+  const { out: chanceOut, error: chanceErr } = useFetchGet<{
+    data: ChanceResponse;
+  }>(`http://localhost:8000/chance`, token!, submit);
 
   useEffect(() => {
     if (chanceErr) {
@@ -108,7 +109,7 @@ const Games: React.FC = () => {
       return;
     }
 
-    if (chanceOut != null) {
+    if (chanceOut != null && chanceOut.data != null) {
       setChance(chanceOut.data.Chance);
     }
   }, [chanceOut, chanceErr]);

@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
-export type FetchData = {
-  out: any;
+export type FetchData<T> = {
+  out: T;
   loading: boolean;
   error: AxiosError | null;
 };
 
-const useFetchGet = (
+const useFetchGet = <T>(
   url: string,
   token?: string,
   propsChange?: boolean,
-): FetchData => {
-  const [out, setOut] = useState<any | null>(null);
+): FetchData<T> => {
+  const [out, setOut] = useState<T>({} as T);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
 

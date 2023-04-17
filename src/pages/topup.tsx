@@ -6,7 +6,7 @@ import useFetchPost from '../hooks/useFetchPost';
 import SuccessCard from '../components/modal';
 import '../styles/topup/topup.css';
 import { NotifContainer, notifyError } from '../components/notification';
-import { DropdownOption, TransactionResponse } from '../types/types';
+import { DropdownOption, Transaction } from '../types/types';
 import { GetCookie } from '../helper/cookies';
 
 type TopupForm = {
@@ -21,7 +21,7 @@ const Topup: React.FC = () => {
   const [amount, setAmount] = useState('');
   const [submit, setSubmit] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [topupResponse, setTopupResponse] = useState<TransactionResponse>({
+  const [topupResponse, setTopupResponse] = useState<Transaction>({
     Amount: 0,
     TransactionId: 0,
     From: 0,
@@ -69,7 +69,7 @@ const Topup: React.FC = () => {
     if (error != null) {
       notifyError(error.response?.data?.message || error.message);
     } else if (out != null) {
-      const topupResponse: TransactionResponse = {
+      const topupResponse: Transaction = {
         Amount: out.data.amount,
         TransactionId: out.data.transaction_id,
         From: out.data.source_of_funds,

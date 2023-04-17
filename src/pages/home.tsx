@@ -8,6 +8,7 @@ import { GetCookie } from '../helper/cookies';
 import TransactionTable from '../components/table';
 import Dropdown from '../components/dropDown';
 import Form from '../components/form';
+import { Profile } from '../types/types';
 
 export type QueryParams = {
   sort: string;
@@ -42,15 +43,18 @@ const Home: React.FC = () => {
     search: search,
   };
 
-  const [profileResponse, setProfileResponse] = useState<ProfileResponse>({
+  const [profileResponse, setProfileResponse] = useState<Profile>({
     Balance: 0,
     Email: '',
     UserId: 0,
     UserName: '',
-    WalletNumber: 0,
+    WalletNumber: '',
   });
   const token = GetCookie('token');
-  const { out, error } = useFetchGet(`http://localhost:8000/profile`, token);
+  const { out, error } = useFetchGet<{ data: ProfileResponse }>(
+    `http://localhost:8000/profile`,
+    token,
+  );
 
   useEffect(() => {
     if (error) {
@@ -59,8 +63,9 @@ const Home: React.FC = () => {
       return;
     }
 
-    if (out != null) {
-      const profileResponse: ProfileResponse = {
+    if (out != null && out.data != null) {
+      console.log(out);
+      const profileResponse: Profile = {
         Balance: out.data.balance,
         Email: out.data.email,
         UserId: out.data.user_id,
