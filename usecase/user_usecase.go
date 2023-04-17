@@ -6,7 +6,9 @@ import (
 	"assignment-golang-backend/httperror"
 	"assignment-golang-backend/repository"
 	"assignment-golang-backend/util"
-	"net/mail"
+	"errors"
+	"fmt"
+	"regexp"
 )
 
 type UsersUsecase interface {
@@ -35,9 +37,14 @@ func (u *usersUsecaseImp) Register(newUserDTO *dto.RegisterRequestDTO) (*dto.Reg
 		Password: newUserDTO.Password,
 	}
 
-	isValid := checkValidEmail(newUser.Email)
-	if !isValid {
+	err := checkValidEmail2(newUser.Email)
+	if err != nil {
 		return nil, httperror.ErrInvalidRegisterEmail
+	}
+
+	err = checkValidPassword(newUser.Password)
+	if err != nil {
+		return nil, errors.New("invalid password : must be more than 8 char")
 	}
 
 	hashedPassword, err := util.HashPassword(newUser.Password)
@@ -67,9 +74,27 @@ func (u *usersUsecaseImp) Register(newUserDTO *dto.RegisterRequestDTO) (*dto.Reg
 	return out, nil
 }
 
-func checkValidEmail(email string) bool {
-	_, err := mail.ParseAddress(email)
-	return err == nil
+// func checkValidEmail(email string) error {
+// 	_, err := mail.ParseAddress(email)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+func checkValidEmail2(email string) error {
+	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	if !emailRegex.MatchString(email) {
+		return errors.New("invalid email format")
+	}
+	return nil
+}
+
+func checkValidPassword(password string) error {
+	if len(password) < 8 {
+		return fmt.Errorf("password must be at least 8 characters")
+	}
+	return nil
 }
 
 func (u *usersUsecaseImp) Login(loginUserDTO *dto.LoginRequestDTO) (*dto.TokenResponse, error) {

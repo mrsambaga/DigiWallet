@@ -32,12 +32,17 @@ func NewRouter(cfg *RouterConfig) *gin.Engine {
 
 	router.GET("/profile", middleware.AuthorizeJWT, h.GetSelfDetailHandler)
 	router.GET("/inquiry/:user-id", middleware.AuthorizeJWT, h.GetOtherDetailHandler)
-	router.GET("/profile/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
+	router.GET("/transaction", middleware.AuthorizeJWT, h.GetUserTransactions)
 	router.POST("/topup", middleware.AuthorizeJWT, h.Topup)
 	router.POST("/transfer", middleware.AuthorizeJWT, h.Transfer)
-	router.POST("/games", middleware.AuthorizeJWT, h.ProcessGames)
-	router.GET("/chance", middleware.AuthorizeJWT, h.GetChance)
-	router.GET("/leaderboard", middleware.AuthorizeJWT, h.GetLeaderboard)
+
+	gameRouter := router.Group("/games", middleware.AuthorizeJWT)
+	{
+		gameRouter.POST("/play", h.ProcessGames)
+		gameRouter.GET("/chance", h.GetChance)
+		gameRouter.GET("/leaderboard", h.GetLeaderboard)
+	}
+
 	router.POST("/register", h.Register)
 	router.POST("/login", h.Login)
 
