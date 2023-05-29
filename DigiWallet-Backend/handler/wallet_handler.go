@@ -14,7 +14,7 @@ func (h *Handler) GetSelfDetailHandler(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    "INTERNAL_SERVER_ERROR",
-			"message": err.Error(),
+			"messages": err.Error(),
 			"data":    nil,
 		})
 		return
