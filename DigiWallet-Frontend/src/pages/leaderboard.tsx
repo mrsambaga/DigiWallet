@@ -44,7 +44,7 @@ const Leaderboard: React.FC = () => {
   const [leaderboard, setLeaderBoard] = useState<LeaderboardResp[]>([]);
   const { out: outLeaderboard, error: errorLeaderboard } = useFetchGet<{
     data: LeaderboardResp[];
-  }>(`http://localhost:8000/leaderboard`, token!);
+  }>(`http://localhost:8000/games/leaderboard`, token!);
 
   useEffect(() => {
     if (errorLeaderboard) {

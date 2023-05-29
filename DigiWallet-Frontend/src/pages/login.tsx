@@ -80,7 +80,7 @@ const Login: React.FC = () => {
               placeholder="***********"
               value={password}
               onChangeHandler={handlePasswordChange}
-              inputType="text"
+              inputType="password"
             />
             <Button label="Submit" onClickHandler={handleClickSubmit} />
           </div>

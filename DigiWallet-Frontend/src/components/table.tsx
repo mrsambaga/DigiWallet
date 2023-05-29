@@ -18,7 +18,7 @@ const TransactionTable: React.FC<DropdownProps> = ({ QueryParams }) => {
   const [queryParams, setQueryParams] = useState('');
   const [paramChange, setParamChange] = useState(false);
   const { out, loading, error } = useFetchGet<{ data: TransferResponse[] }>(
-    `http://localhost:8000/profile/transaction?${queryParams}`,
+    `http://localhost:8000/transaction?${queryParams}`,
     token!,
     paramChange,
   );

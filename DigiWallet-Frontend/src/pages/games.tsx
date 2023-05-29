@@ -35,7 +35,7 @@ const Games: React.FC = () => {
   };
 
   const { out: gamesOut, error: gamesErr } = useFetchPost(
-    'http://localhost:8000/games',
+    'http://localhost:8000/games/play',
     { box_id: selectedId },
     submit,
     () => setSubmit(false),
@@ -100,7 +100,7 @@ const Games: React.FC = () => {
   const [chance, setChance] = useState(0);
   const { out: chanceOut, error: chanceErr } = useFetchGet<{
     data: ChanceResponse;
-  }>(`http://localhost:8000/chance`, token!, submit);
+  }>(`http://localhost:8000/games/chance`, token!, submit);
 
   useEffect(() => {
     if (chanceErr) {
@@ -109,7 +109,7 @@ const Games: React.FC = () => {
       return;
     }
 
-    if (chanceOut != null && chanceOut.data != null) {
+    if (chanceOut != null && profileOut.data != null) {
       setChance(chanceOut.data.Chance);
     }
   }, [chanceOut, chanceErr]);

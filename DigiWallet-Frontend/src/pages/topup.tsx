@@ -67,7 +67,7 @@ const Topup: React.FC = () => {
 
   useEffect(() => {
     if (error != null) {
-      notifyError(error.response?.data?.message || error.message);
+      notifyError(error.response?.data || error.message);
     } else if (out != null) {
       const topupResponse: Transaction = {
         Amount: out.data.amount,

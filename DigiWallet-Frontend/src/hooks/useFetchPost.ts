@@ -8,7 +8,7 @@ const useFetchPost = <T>(
   toggleSubmit: () => void,
   token?: string,
 ): any => {
-  const [out, setOut] = useState<any | null>(null);
+  const [out, setOut] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
 
